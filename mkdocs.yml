@@ -1,0 +1,112 @@
+site_name: SYSU::ACMM
+site_description: 社团算法知识库与传承平台
+site_url: https://你的用户名.github.io/acmm-site  # 稍后部署时再改
+
+theme:
+  name: material
+  language: zh
+  logo: assets/logo.png
+  palette:
+    # Light Mode 配色 (模仿 OI-Wiki 的浅色风格)
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey   # 主色：蓝灰色
+      accent: light blue   # 强调色：浅蓝色
+      toggle:
+        icon: material/weather-night
+        name: 切换至深色模式
+    # Dark Mode 配色
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      accent: light blue
+      toggle:
+        icon: material/weather-sunny
+        name: 切换至浅色模式
+  features:
+    - navigation.tabs          # 顶部大分类标签
+    - navigation.sections      # 侧边栏分组折叠
+    - navigation.indexes       # 分组标题可点击的索引页
+    - navigation.top           # 返回顶部按钮
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - 主页: index.md
+  - 归档: archive.md
+  - 关于:
+    - about/index.md
+    - 成员介绍: about/members.md
+  - 算法:
+    - algorithms/index.md
+    - 数据结构:
+      - algorithms/data-structures/index.md
+      - 线性表: algorithms/linear-list.md
+      - 栈与队列: algorithms/data-structures/stack-queue.md
+      - 哈希表: algorithms/data-structures/hash-table.md
+      - 堆: algorithms/data-structures/heap.md
+      - 并查集: algorithms/data-structures/union-find.md
+      - 线段树: algorithms/data-structures/segment-tree.md
+      - 树状数组: algorithms/data-structures/fenwick.md
+    - 树:
+      - algorithms/tree/index.md
+      - 树基础: algorithms/tree.md
+      - 二叉搜索树: algorithms/tree/bst.md
+      - 最近公共祖先: algorithms/tree/lca.md
+    - 图:
+      - algorithms/graph/index.md
+      - 图基础: algorithms/graph.md
+      - 最短路: algorithms/graph/shortest-path.md
+      - 最小生成树: algorithms/graph/mst.md
+      - 拓扑排序: algorithms/graph/toposort.md
+    - 字符串:
+      - algorithms/strings/index.md
+      - 字符串基础: algorithms/strings/basics.md
+      - KMP: algorithms/strings/kmp.md
+      - Trie: algorithms/strings/trie.md
+    - 数学:
+      - algorithms/math/index.md
+      - 数论基础: algorithms/math/number-theory.md
+      - 组合数学: algorithms/math/combinatorics.md
+      - 快速幂: algorithms/math/fast-power.md
+    - 动态规划:
+      - algorithms/dp/index.md
+      - DP 基础: algorithms/dp/basics.md
+      - 01 背包: algorithms/dp/knapsack.md
+      - 区间 DP: algorithms/dp/interval.md
+    - 贪心:
+      - algorithms/greedy/index.md
+      - 贪心基础: algorithms/greedy/basics.md
+      - 区间调度: algorithms/greedy/interval.md
+    - 搜索:
+      - algorithms/search/index.md
+      - DFS 与 BFS: algorithms/search/dfs-bfs.md
+      - 二分搜索: algorithms/search/binary-search.md
+    - 计算几何:
+      - algorithms/geometry/index.md
+      - 几何基础: algorithms/geometry/basics.md
+      - 叉积与凸包: algorithms/geometry/convex-hull.md
+    - 排序与技巧:
+      - algorithms/sorting/index.md
+      - 排序: algorithms/sorting.md
+  - 题库:
+    - problems/index.md
+    - Two Sum: problems/two-sum.md
+  - 支持:
+    - support/index.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+  - admonition
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - stylesheets/sidebar.css
+
+extra:
+  analytics: {}   # 一个无害的占位，非必须
