@@ -1,0 +1,28 @@
+/* 隐藏侧边栏更低级目录（三级及以下），保留二级标题 */
+.md-sidebar .md-nav__list .md-nav__list .md-nav__list {
+    display: none;
+}
+
+/* 隐藏侧边栏一级目录标题（如“算法”），保留二级条目 */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link,
+.md-nav--primary > .md-nav__list > .md-nav__item > label.md-nav__link {
+    display: none;
+}
+
+/* 去掉隐藏标题后多余的上边距 */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__list {
+    margin-top: 0;
+}
+
+/* 二级条目使用正常字重 */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__list > .md-nav__item > .md-nav__link,
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__list > .md-nav__item > label.md-nav__link {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight : 40;
+}
+
+/* 仅在首页隐藏右侧目录栏 */
+body[data-md-page="index"] .md-sidebar--secondary {
+    display: none;
+}
