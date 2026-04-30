@@ -25,7 +25,6 @@ theme:
         name: 切换至浅色模式
   features:
     - navigation.tabs          # 顶部大分类标签
-    - navigation.sections      # 侧边栏分组折叠
     - navigation.indexes       # 分组标题可点击的索引页
     - navigation.top           # 返回顶部按钮
     - search.highlight
