@@ -1,7 +1,7 @@
 /* 隐藏侧边栏更低级目录（三级及以下），保留二级标题 */
-.md-sidebar .md-nav__list .md-nav__list .md-nav__list {
+/* .md-sidebar .md-nav__list .md-nav__list .md-nav__list {
     display: none;
-}
+} */
 
 /* 隐藏侧边栏一级目录标题（如“算法”），保留二级条目
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link,
