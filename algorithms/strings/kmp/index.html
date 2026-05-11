@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://SemsueZhang.github.io/acmm-site/algorithms/strings/kmp/">
       
       
-        <link rel="prev" href="../basics/">
+        <link rel="prev" href="../">
       
       
         <link rel="next" href="../trie/">
@@ -535,10 +535,6 @@
       
         
           
-        
-      
-        
-      
         
       
         
@@ -1270,8 +1266,6 @@
       
         
       
-        
-      
     
     
     
@@ -1322,34 +1316,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../basics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    字符串基础
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -1422,7 +1388,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心概念
+        问题背景与适用场景
       
     </span>
   </a>
@@ -1433,10 +1399,49 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        构建前缀函数
+        核心思想与关键结论
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="核心思想与关键结论">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-prefix-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 前缀函数（prefix function）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 失配回退直觉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 与 next 数组等价理解
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1444,7 +1449,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        复杂度
+        分步执行过程（示例输入）
       
     </span>
   </a>
@@ -1455,7 +1460,46 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        易错点
+        示例题（基础应用）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="示例题（基础应用）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        题目（示例题）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        思路分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        伪代码
       
     </span>
   </a>
@@ -1463,10 +1507,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#c17" class="md-nav__link">
     <span class="md-ellipsis">
       
-        练习方向
+        C++17 参考实现（可运行）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        时间复杂度与空间复杂度
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        适当扩展：循环串匹配思路
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见错误与边界情况
       
     </span>
   </a>
@@ -1876,139 +1953,6 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../greedy/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    贪心
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    贪心
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../greedy/basics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    贪心基础
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../greedy/interval/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    区间调度
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
-        
-          
-          <div class="md-nav__link md-nav__container">
             <a href="../../search/" class="md-nav__link ">
               
   
@@ -2027,14 +1971,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_9">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2138,7 +2082,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -2160,14 +2104,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_10">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2222,109 +2166,6 @@
     
   
     叉积与凸包
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_11" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../sorting/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    排序与技巧
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_11" id="__nav_4_11_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_11">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    排序与技巧
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../sorting/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    排序
   
 
     
@@ -2552,7 +2393,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心概念
+        问题背景与适用场景
       
     </span>
   </a>
@@ -2563,10 +2404,49 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        构建前缀函数
+        核心思想与关键结论
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="核心思想与关键结论">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-prefix-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 前缀函数（prefix function）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 失配回退直觉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 与 next 数组等价理解
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2574,7 +2454,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        复杂度
+        分步执行过程（示例输入）
       
     </span>
   </a>
@@ -2585,7 +2465,46 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        易错点
+        示例题（基础应用）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="示例题（基础应用）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        题目（示例题）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        思路分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        伪代码
       
     </span>
   </a>
@@ -2593,10 +2512,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#c17" class="md-nav__link">
     <span class="md-ellipsis">
       
-        练习方向
+        C++17 参考实现（可运行）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        时间复杂度与空间复杂度
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        适当扩展：循环串匹配思路
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见错误与边界情况
       
     </span>
   </a>
@@ -2621,33 +2573,177 @@
 
 
 <h1 id="kmp">KMP</h1>
-<p>KMP 用于在文本串中快速匹配模式串, 将时间复杂度降到 <span class="arithmatex">\(O(n+m)\)</span>。</p>
-<h2 id="_1">核心概念</h2>
+<h2 id="_1">问题背景与适用场景</h2>
+<p>在很多字符串题中，我们需要判断模式串 <code>P</code> 是否出现在文本串 <code>S</code> 中，或者找出所有出现位置。<br />
+朴素做法一旦失配就回到下一个起点重试，最坏会退回很多次，复杂度可达 <span class="arithmatex">\(O(nm)\)</span>。</p>
+<p>KMP（Knuth-Morris-Pratt）通过“利用已经匹配过的信息”避免文本指针回退，把匹配复杂度降为线性，适合：</p>
 <ul>
-<li>next/前缀函数: 记录最长相等前后缀长度</li>
-<li>失配时根据 next 跳转</li>
+<li>子串查找（第一次出现位置 / 全部出现位置）</li>
+<li>字符串周期性判断（最短循环节）</li>
+<li>前后缀相关统计（结合前缀函数）</li>
 </ul>
-<h2 id="_2">构建前缀函数</h2>
+<p>其中 <span class="arithmatex">\(n=|S|,\ m=|P|\)</span>。</p>
+<h2 id="_2">核心思想与关键结论</h2>
+<h3 id="1-prefix-function">1. 前缀函数（prefix function）</h3>
+<p>定义 <code>pi[i]</code>：在模式串 <code>P[0..i]</code> 中，最长的“真前缀 = 真后缀”长度。</p>
+<p>例如 <code>P = "ababaca"</code>：</p>
 <ul>
-<li>扫描模式串</li>
-<li>当失配时回退到 next 值</li>
-<li>匹配成功则长度加 1</li>
+<li><code>pi[0]=0</code></li>
+<li><code>pi[1]=0</code></li>
+<li><code>pi[2]=1</code></li>
+<li><code>pi[3]=2</code></li>
+<li><code>pi[4]=3</code></li>
+<li><code>pi[5]=0</code></li>
+<li><code>pi[6]=1</code></li>
 </ul>
-<h2 id="_3">复杂度</h2>
+<h3 id="2">2. 失配回退直觉</h3>
+<p>匹配到 <code>P[j]</code> 失配时，不必从 <code>j=0</code> 重来，而是把 <code>j</code> 回退到 <code>pi[j-1]</code>。<br />
+因为 <code>P[0..pi[j-1)-1]</code> 已经等于当前后缀，跳过去不会漏解。</p>
+<h3 id="3-next">3. 与 next 数组等价理解</h3>
+<p>很多资料写 <code>next</code>，很多写 <code>pi</code>。它们本质都在表达“失配后模式串应该跳到哪里”。<br />
+常见差异只在下标和初值定义，不在算法思想本身。</p>
+<p>关键结论：</p>
 <ul>
-<li>构建: <span class="arithmatex">\(O(m)\)</span></li>
-<li>匹配: <span class="arithmatex">\(O(n)\)</span></li>
+<li>构建 <code>pi</code> 只需线性时间 <span class="arithmatex">\(O(m)\)</span></li>
+<li>匹配过程也只需线性时间 <span class="arithmatex">\(O(n)\)</span></li>
+<li>总复杂度 <span class="arithmatex">\(O(n+m)\)</span></li>
 </ul>
-<h2 id="_4">易错点</h2>
+<h2 id="_3">分步执行过程（示例输入）</h2>
+<p>示例：</p>
 <ul>
-<li>next 的定义与下标处理</li>
-<li>回退过程必须循环回退</li>
+<li>文本串 <code>S = "ababcabcabababd"</code></li>
+<li>模式串 <code>P = "ababd"</code></li>
 </ul>
-<h2 id="_5">练习方向</h2>
+<p>先构建 <code>P</code> 的 <code>pi</code>：</p>
 <ul>
-<li>子串查找</li>
-<li>最短循环节</li>
-<li>前后缀统计</li>
+<li><code>pi = [0, 0, 1, 2, 0]</code></li>
+</ul>
+<p>匹配时令 <code>i</code> 扫描 <code>S</code>，<code>j</code> 表示已匹配的模式串长度。</p>
+<ol>
+<li><code>i=0..3</code> 时，<code>S</code> 前四个字符与 <code>P</code> 前四个字符匹配，<code>j</code> 逐步变为 4。</li>
+<li>在 <code>i=4</code> 处失配（<code>S[i]='c'</code>，<code>P[j]='d'</code>）：</li>
+<li>回退 <code>j = pi[3] = 2</code></li>
+<li>继续比较，若仍失配，再回退 <code>j = pi[1] = 0</code></li>
+<li>文本串指针 <code>i</code> 不回退，继续向后扫。</li>
+<li>当扫到 <code>i=14</code> 时，<code>j</code> 达到 5（即 <code>m</code>），说明匹配成功，起点是</li>
+</ol>
+<div class="arithmatex">\[
+i-m+1 = 14-5+1 = 10
+\]</div>
+<p>得到模式串在文本串中的一次出现位置 <code>10</code>（0-based）。</p>
+<h2 id="_4">示例题（基础应用）</h2>
+<h3 id="_5">题目（示例题）</h3>
+<p>给定文本串 <code>S</code> 和模式串 <code>P</code>，输出 <code>P</code> 在 <code>S</code> 中所有出现位置（从 0 开始）。</p>
+<h3 id="_6">思路分析</h3>
+<ul>
+<li>先用模式串构建 <code>pi</code>。</li>
+<li>扫描文本串并维护 <code>j</code>。</li>
+<li>每当 <code>j==m</code>，记录一次答案位置 <code>i-m+1</code>，然后令 <code>j=pi[j-1]</code> 继续找下一个。</li>
+</ul>
+<p>这样能自然处理重叠匹配，例如 <code>S="aaaaa"</code>，<code>P="aaa"</code> 会得到位置 <code>0,1,2</code>。</p>
+<h2 id="_7">伪代码</h2>
+<div class="highlight"><pre><span></span><code>function build_pi(P):
+    m = len(P)
+    pi[0] = 0
+    j = 0
+    for i in [1 .. m-1]:
+        while j &gt; 0 and P[i] != P[j]:
+            j = pi[j-1]
+        if P[i] == P[j]:
+            j = j + 1
+        pi[i] = j
+    return pi
+
+function kmp_search(S, P):
+    pi = build_pi(P)
+    ans = empty list
+    j = 0
+    for i in [0 .. len(S)-1]:
+        while j &gt; 0 and S[i] != P[j]:
+            j = pi[j-1]
+        if S[i] == P[j]:
+            j = j + 1
+        if j == len(P):
+            ans.push_back(i - len(P) + 1)
+            j = pi[j-1]
+    return ans
+</code></pre></div>
+<h2 id="c17">C++17 参考实现（可运行）</h2>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+
+<span class="c1">// 构建前缀函数 pi，pi[i] 表示 P[0..i] 的最长真前后缀长度</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">buildPi</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">p</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pi</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 失配时不断回退，直到可匹配或退到 0</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pi</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pi</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 返回模式串 p 在文本串 s 中的所有匹配起点（0-based）</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">kmpSearch</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ans</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">ans</span><span class="p">;</span><span class="w"> </span><span class="c1">// 约定：空模式串不处理</span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buildPi</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">p</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pi</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ans</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">            </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pi</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"> </span><span class="c1">// 继续寻找下一个（含重叠）匹配</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ans</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ios</span><span class="o">::</span><span class="n">sync_with_stdio</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cin</span><span class="p">.</span><span class="n">tie</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<span class="w">    </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kmpSearch</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pos</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">pos</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">;</span>
+<span class="w">            </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="_8">时间复杂度与空间复杂度</h2>
+<ul>
+<li>构建前缀函数：<span class="arithmatex">\(O(m)\)</span></li>
+<li>匹配过程：<span class="arithmatex">\(O(n)\)</span></li>
+<li>总时间复杂度：<span class="arithmatex">\(O(n+m)\)</span></li>
+<li>额外空间复杂度：<span class="arithmatex">\(O(m)\)</span></li>
+</ul>
+<h2 id="_9">适当扩展：循环串匹配思路</h2>
+<p>若要判断 <code>B</code> 是否是 <code>A</code> 的循环位移，可把 <code>A+A</code> 作为文本串，在其中做一次 KMP 查找 <code>B</code>：</p>
+<ul>
+<li>若 <code>|A| \neq |B|</code>，一定不是</li>
+<li>若 <code>B</code> 是 <code>A</code> 的循环位移，则 <code>B</code> 必定是 <code>A+A</code> 的子串</li>
+</ul>
+<p>这是 KMP 在线性匹配场景下的经典扩展。</p>
+<h2 id="_10">常见错误与边界情况</h2>
+<ul>
+<li>把 <code>pi</code> 和某版本 <code>next</code> 的下标定义混用，导致回退位置错一位。</li>
+<li>失配时只回退一次而不是循环回退（应使用 <code>while</code>）。</li>
+<li>找到一个匹配后忘记 <code>j = pi[j-1]</code>，导致漏掉重叠答案。</li>
+<li>忽略空模式串约定，访问 <code>p[0]</code> 可能越界。</li>
+<li>只记公式不记直觉：回退的本质是“已匹配后缀可复用”。</li>
 </ul>
 
 
