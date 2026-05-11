@@ -68,7 +68,6 @@ nav:
       - 拓扑排序: algorithms/graph/toposort.md
     - 字符串:
       - algorithms/strings/index.md
-      - 字符串基础: algorithms/strings/basics.md
       - KMP: algorithms/strings/kmp.md
       - Trie: algorithms/strings/trie.md
     - 数学:
@@ -81,10 +80,6 @@ nav:
       - DP 基础: algorithms/dp/basics.md
       - 01 背包: algorithms/dp/knapsack.md
       - 区间 DP: algorithms/dp/interval.md
-    - 贪心:
-      - algorithms/greedy/index.md
-      - 贪心基础: algorithms/greedy/basics.md
-      - 区间调度: algorithms/greedy/interval.md
     - 搜索:
       - algorithms/search/index.md
       - DFS 与 BFS: algorithms/search/dfs-bfs.md
@@ -93,9 +88,6 @@ nav:
       - algorithms/geometry/index.md
       - 几何基础: algorithms/geometry/basics.md
       - 叉积与凸包: algorithms/geometry/convex-hull.md
-    - 排序与技巧:
-      - algorithms/sorting/index.md
-      - 排序: algorithms/sorting.md
   - 题库:
     - problems/index.md
     - Two Sum: problems/two-sum.md
