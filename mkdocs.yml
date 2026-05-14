@@ -90,7 +90,12 @@ nav:
       - 叉积与凸包: algorithms/geometry/convex-hull.md
   - 题库:
     - problems/index.md
-    - Two Sum: problems/two-sum.md
+    - 校赛:
+      - 2025 中山大学程序设计校赛: problems/college/sysucpc2025.md
+    - 新手赛:
+      - 2026 中山大学程序设计新手赛: problems/novice/sysunpc2026.md
+    - 周赛:
+      - 2025-12-7 周赛: problems/weekly/2025-12-7.md
   - 支持:
     - support/index.md
 
