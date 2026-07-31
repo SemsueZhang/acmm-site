@@ -46,45 +46,67 @@ nav:
     - 成员介绍: about/members.md
   - 算法:
     - algorithms/index.md
+    - 练习题单与资料来源: algorithms/practice.md
+    - 基础算法与策略:
+      - algorithms/foundations/index.md
+      - 复杂度、枚举与模拟: algorithms/foundations/complexity-enumeration.md
+      - 前缀和、差分与离散化: algorithms/foundations/prefix-difference.md
+      - 贪心: algorithms/foundations/greedy.md
+      - 分治与扫描线: algorithms/foundations/divide-conquer-sweep.md
+      - 高精度: algorithms/foundations/high-precision.md
+      - 排序算法: algorithms/sorting.md
     - 数据结构:
       - algorithms/data-structures/index.md
       - 线性表: algorithms/linear-list.md
       - 栈与队列: algorithms/data-structures/stack-queue.md
+      - 单调栈与单调队列: algorithms/data-structures/monotonic.md
       - 哈希表: algorithms/data-structures/hash-table.md
       - 堆: algorithms/data-structures/heap.md
       - 并查集: algorithms/data-structures/union-find.md
+      - ST 表: algorithms/data-structures/sparse-table.md
       - 线段树: algorithms/data-structures/segment-tree.md
       - 树状数组: algorithms/data-structures/fenwick.md
+      - 笛卡尔树与平衡树: algorithms/data-structures/advanced-trees.md
     - 树:
       - algorithms/tree/index.md
       - 树基础: algorithms/tree.md
       - 二叉搜索树: algorithms/tree/bst.md
       - 最近公共祖先: algorithms/tree/lca.md
+      - 树上综合算法: algorithms/tree/techniques.md
     - 图:
       - algorithms/graph/index.md
       - 图基础: algorithms/graph.md
       - 最短路: algorithms/graph/shortest-path.md
       - 最小生成树: algorithms/graph/mst.md
       - 拓扑排序: algorithms/graph/toposort.md
+      - 欧拉路与二分图: algorithms/graph/euler-bipartite.md
+      - 强连通分量与割点割边: algorithms/graph/connectivity.md
     - 字符串:
       - algorithms/strings/index.md
       - KMP: algorithms/strings/kmp.md
       - Trie: algorithms/strings/trie.md
+      - 字符串哈希: algorithms/strings/hash.md
+      - Manacher: algorithms/strings/manacher.md
     - 数学:
       - algorithms/math/index.md
       - 数论基础: algorithms/math/number-theory.md
       - 组合数学: algorithms/math/combinatorics.md
       - 快速幂: algorithms/math/fast-power.md
+      - 矩阵与高斯消元: algorithms/math/linear-algebra.md
     - 动态规划:
       - algorithms/dp/index.md
       - DP 基础: algorithms/dp/basics.md
       - 01 背包: algorithms/dp/knapsack.md
       - 区间 DP: algorithms/dp/interval.md
+      - 多维与树形 DP: algorithms/dp/tree-multidimensional.md
+      - 状态压缩 DP: algorithms/dp/bitmask.md
+      - DP 常用优化: algorithms/dp/optimization.md
     - 搜索:
       - algorithms/search/index.md
       - DFS 与 BFS: algorithms/search/dfs-bfs.md
       - 二分搜索: algorithms/search/binary-search.md
-    - 计算几何:
+      - 搜索进阶: algorithms/search/advanced.md
+    - 计算几何（NOI 级拓展）:
       - algorithms/geometry/index.md
       - 几何基础: algorithms/geometry/basics.md
       - 叉积与凸包: algorithms/geometry/convex-hull.md
@@ -101,7 +123,11 @@ nav:
 
 markdown_extensions:
   - pymdownx.highlight
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.arithmatex:
       generic: true
   - admonition
