@@ -1,34 +1,97 @@
 # 最短路
 
-最短路用于在带权或无权图中找到从源点到其他点的最短路径。
+选择算法前先看边权：无权（或等权）用 BFS；只有 0/1 用 0-1 BFS；非负权用 Dijkstra；允许负权用 Bellman–Ford；点数较小且需任意两点距离用 Floyd–Warshall。
 
-## 常见算法
+## 松弛
 
-- BFS: 无权图最短路
-- Dijkstra: 非负权图
-- Bellman-Ford: 可处理负权
-- Floyd: 多源最短路
+若已知到 $u$ 的距离 `dist[u]`，经过边 $(u,v,w)$ 可尝试改进 $v$：
 
-## 选择建议
+```cpp
+if (dist[v] > dist[u] + w) dist[v] = dist[u] + w;
+```
 
-- 稀疏图 + 非负权: Dijkstra
-- 存在负权: Bellman-Ford 或 SPFA
-- 点数较小: Floyd
+这一步叫松弛。所有最短路算法都在安排“以什么顺序、做多少次松弛”。
 
-## 复杂度
+## Dijkstra：非负权
 
-- BFS: $O(n + m)$
-- Dijkstra(堆): $O((n + m)\log n)$
-- Bellman-Ford: $O(nm)$
-- Floyd: $O(n^3)$
+小根堆每次取当前距离最小的状态。因为边权非负，没有尚未处理的更远点能绕回来把它变得更小。
+
+```cpp
+const long long INF = (1LL << 62);
+vector<long long> dijkstra(int s, const vector<vector<Edge>>& g) {
+    int n = (int)g.size() - 1;
+    vector<long long> dist(n + 1, INF);
+    priority_queue<pair<long long,int>,
+                   vector<pair<long long,int>>,
+                   greater<pair<long long,int>>> pq;
+    dist[s] = 0;
+    pq.push({0, s});
+    while (!pq.empty()) {
+        auto [du, u] = pq.top(); pq.pop();
+        if (du != dist[u]) continue; // 过期状态
+        for (auto [v, w] : g[u]) {
+            if (dist[v] > du + w) {
+                dist[v] = du + w;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+    return dist;
+}
+```
+
+复杂度 $O((n+m)\log n)$。只要存在负权边，上述“取出即安全”的证明就失效。
+
+## Bellman–Ford 与负环
+
+一条不重复顶点的最短路至多含 $n-1$ 条边。连续做 $n-1$ 轮，对所有边松弛，就能得到最短路；若第 $n$ 轮仍能松弛，则存在从源点可达的负环。
+
+复杂度 $O(nm)$。SPFA 只把被更新的点放入队列，许多数据上更快，但最坏仍为 $O(nm)$，不能把它当作稳定的线性算法。
+
+## Floyd–Warshall：多源最短路
+
+令 `d[i][j]` 为当前最短距离。依次允许编号 $1..k$ 的点作为中间点：
+
+```cpp
+for (int k = 1; k <= n; ++k)
+    for (int i = 1; i <= n; ++i)
+        for (int j = 1; j <= n; ++j)
+            if (d[i][k] < INF && d[k][j] < INF)
+                d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+```
+
+循环顺序必须让 `k` 在最外层。时间 $O(n^3)$，空间 $O(n^2)$。若最终 `d[i][i]<0`，说明存在涉及 $i$ 的负环。
+
+## 手算例题
+
+边为 $1\to2(4),1\to3(1),3\to2(2),2\to4(1),3\to4(5)$。Dijkstra 先确定 3（距离 1），由 3 把 2 更新为 3、4 更新为 6；再确定 2，把 4 更新为 4。最短路为 `1-3-2-4`。
+
+```mermaid
+graph LR
+    N1((1)) -- "4" --> N2((2))
+    N1 -- "1" --> N3((3))
+    N3 -- "2" --> N2
+    N2 -- "1" --> N4((4))
+    N3 -- "5" --> N4
+```
+
+| 确定的点 | 新发生的有效松弛 | 当前 $d_2,d_3,d_4$ |
+| --- | --- | --- |
+| 1 | $d_2\leftarrow4, d_3\leftarrow1$ | $4,1,\infty$ |
+| 3 | $d_2\leftarrow3, d_4\leftarrow6$ | $3,1,6$ |
+| 2 | $d_4\leftarrow4$ | $3,1,4$ |
+| 4 | 无 | $3,1,4$ |
+
+图中 `1→2→4` 虽然边数更少，权值和却为 5；最短路比较的是总权值而不是经过的边数。
+
+## 次短路
+
+同时为每个点维护最短 `d1` 与严格次短 `d2`。新距离 `nd` 小于 `d1[v]` 时，旧最短顺延为次短；若 `d1[v] < nd < d2[v]`，更新次短。是否允许与最短等长、是否允许重复点/边必须以题意为准。
 
 ## 易错点
 
-- Dijkstra 不能处理负权边
-- 注意路径重构的前驱数组
-
-## 练习方向
-
-- 最短路路径还原
-- 多源最短路
-- 差分约束系统
+- `INF + w` 溢出，松弛前先判断可达。
+- Dijkstra 用在负权图。
+- 无向图只加单向边。
+- Floyd 初始化时没有令 `d[i][i]=0`，或重边没有取最小值。
+- “最短路不存在”和“距离很大”输出规则混淆。
