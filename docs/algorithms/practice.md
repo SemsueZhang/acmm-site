@@ -42,9 +42,12 @@
 ## 字符串与数学
 
 - KMP：[P3375【模板】KMP](https://www.luogu.com.cn/problem/P3375)
+- Border 与周期：[P4391 无线传输](https://www.luogu.com.cn/problem/P4391)
 - Trie：[P8306【模板】字典树](https://www.luogu.com.cn/problem/P8306)
 - 字符串哈希：[P3370【模板】字符串哈希](https://www.luogu.com.cn/problem/P3370)
 - Manacher：[P3805【模板】Manacher](https://www.luogu.com.cn/problem/P3805)
+- Z 函数（拓展）：[P5410【模板】扩展 KMP](https://www.luogu.com.cn/problem/P5410)
+- 后缀数组（拓展）：[P3809【模板】后缀排序](https://www.luogu.com.cn/problem/P3809)
 - 快速幂：[P1226【模板】快速幂](https://www.luogu.com.cn/problem/P1226)
 - 逆元/扩展欧几里得：[P1082 同余方程](https://www.luogu.com.cn/problem/P1082)
 - 中国剩余定理：[P1495 曹冲养猪](https://www.luogu.com.cn/problem/P1495)

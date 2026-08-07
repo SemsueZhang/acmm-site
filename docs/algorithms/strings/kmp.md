@@ -1,212 +1,184 @@
-# KMP
+# KMP：失配后不回头
 
-## 问题背景与适用场景
+给定文本串 $S$ 和模式串 $P$，最直接的匹配方法是枚举每个起点，再逐字符比较。问题出在失配时：刚刚比较成功的字符全部被丢弃，下一个起点又从头比较。最坏情况下会做 $O(|S||P|)$ 次比较。
 
-在很多字符串题中，我们需要判断模式串 `P` 是否出现在文本串 `S` 中，或者找出所有出现位置。  
-朴素做法一旦失配就回到下一个起点重试，最坏会退回很多次，复杂度可达 $O(nm)$。
+KMP 的目标不是避免失配，而是回答：**已经知道前 $j$ 个字符匹配时，失配后最多还能保留多少个已匹配字符？**
 
-KMP（Knuth-Morris-Pratt）通过“利用已经匹配过的信息”避免文本指针回退，把匹配复杂度降为线性，适合：
+## 1. 一次失配暴露出的重复工作
 
-- 子串查找（第一次出现位置 / 全部出现位置）
-- 字符串周期性判断（最短循环节）
-- 前后缀相关统计（结合前缀函数）
+令：
 
-其中 $n=|S|,\ m=|P|$。
+```text
+文本 S = abababca
+模式 P = ababca
+```
 
-## 核心思想与关键结论
+从位置 0 开始，前四个字符 `abab` 匹配，接下来比较 `S[4]='a'` 与 `P[4]='c'` 时失配。
 
-### 1. 前缀函数（prefix function）
+朴素算法会把模式串右移一位，再从 `P[0]` 开始。但已匹配片段 `abab` 的后缀 `ab`，恰好等于模式串的前缀 `ab`：
 
-定义 `pi[i]`：在模式串 `P[0..i]` 中，最长的“真前缀 = 真后缀”长度。
+```text
+已匹配文本：a b a b
+模式串前缀：    a b
+```
 
-例如 `P = "ababaca"`：
+因此，文本指针不需要退回，模式串只要把“已匹配长度”从 4 改成 2，就能继续比较。KMP 保存的正是这种前后缀重合。
 
-- `pi[0]=0`
-- `pi[1]=0`
-- `pi[2]=1`
-- `pi[3]=2`
-- `pi[4]=3`
-- `pi[5]=0`
-- `pi[6]=1`
+## 2. 前缀函数 `pi`
 
-### 2. 失配回退直觉
+对模式串 $P$，定义：
 
-匹配到 `P[j]` 失配时，不必从 `j=0` 重来，而是把 `j` 回退到 `pi[j-1]`。  
-因为 `P[0..pi[j-1)-1]` 已经等于当前后缀，跳过去不会漏解。
+$$
+\pi[i]=\max\{k\mid 0\le k<i+1,\ P[0..k-1]=P[i-k+1..i]\}.
+$$
 
-### 3. 与 next 数组等价理解
+也就是说，`pi[i]` 是前缀 `P[0..i]` 的最长相等真前缀与真后缀长度，也就是最长 Border 长度。
 
-很多资料写 `next`，很多写 `pi`。它们本质都在表达“失配后模式串应该跳到哪里”。  
-常见差异只在下标和初值定义，不在算法思想本身。
+以 `P="ababca"` 为例：
 
-关键结论：
+| $i$ | 前缀 | 最长 Border | `pi[i]` |
+| --- | --- | --- | --- |
+| 0 | `a` | 空 | 0 |
+| 1 | `ab` | 空 | 0 |
+| 2 | `aba` | `a` | 1 |
+| 3 | `abab` | `ab` | 2 |
+| 4 | `ababc` | 空 | 0 |
+| 5 | `ababca` | `a` | 1 |
 
-- 构建 `pi` 只需线性时间 $O(m)$
-- 匹配过程也只需线性时间 $O(n)$
-- 总复杂度 $O(n+m)$
+所以 `pi=[0,0,1,2,0,1]`。
 
-下图表示模式串已匹配到长度 `j` 后发生失配时的回退链。每次回退都换成一个更短、但仍可能与当前文本后缀对齐的前缀；文本指针不后退。
+!!! note "`next` 与 `pi`"
+    不同资料中的 `next` 可能保存长度、下标或特殊值 `-1`。本章统一使用 0-based 的前缀函数 `pi`：它永远表示长度。不要把不同定义的回退公式混用。
+
+## 3. 怎样增量求 `pi`
+
+假设 `pi[0..i-1]` 已知，现在求 `pi[i]`。先尝试把前一个前缀的最长 Border 延长一位：令 `j=pi[i-1]`，比较 `P[i]` 与 `P[j]`。
+
+- 相等：原 Border 成功延长，`pi[i]=j+1`。
+- 不等且 `j>0`：最长 Border 不能延长，但它的 Border 仍可能延长，于是令 `j=pi[j-1]`。
+- 一直退到匹配成功或 `j=0`。
+
+为什么下一候选恰好是 `pi[j-1]`？因为当前长度为 `j` 的前缀同时也是已处理部分的后缀；任何更短可行 Border 也必须是 `P[0..j-1]` 的 Border。`pi[j-1]` 是其中最长者，先尝试它不会漏解。
+
+```cpp
+vector<int> prefixFunction(const string& p) {
+    int m = p.size();
+    vector<int> pi(m);
+    for (int i = 1, j = 0; i < m; ++i) {
+        while (j > 0 && p[i] != p[j]) j = pi[j - 1];
+        if (p[i] == p[j]) ++j;
+        pi[i] = j;
+    }
+    return pi;
+}
+```
+
+### 为什么构造是线性的
+
+`j` 每次成功匹配最多增加 1，总增加量不超过 $m$；`while` 中每次回退都会严格减小 `j`，总减少量不可能超过先前的总增加量。因此虽然代码中有嵌套循环，所有回退次数之和仍为 $O(m)$。
+
+## 4. 用模式串匹配文本
+
+扫描文本时，`j` 表示：当前文本前缀的后缀中，与模式串前缀相等的最大长度。比较新字符 `S[i]`：
+
+1. 若失配，沿 `pi` 链回退 `j`；文本位置 `i` 不后退。
+2. 若 `S[i]==P[j]`，令 `j++`。
+3. 若 `j==m`，找到一次匹配，起点为 `i-m+1`。
+4. 记录后令 `j=pi[j-1]`，继续寻找可能重叠的匹配。
 
 ```mermaid
 flowchart LR
-    A["尝试比较 P[j]"] --> B{"字符相同？"}
-    B -- "是" --> C["j 加 1，继续匹配"]
-    B -- "否且 j > 0" --> D["j = pi[j-1]"]
-    D --> A
-    B -- "否且 j = 0" --> E["文本指针前进"]
-    C --> F{"j 等于模式串长度？"}
-    F -- "否" --> A
-    F -- "是" --> G["记录匹配；j = pi[j-1]"]
+    A["读入文本字符 S[i]"] --> B{"S[i] == P[j]？"}
+    B -- "否且 j > 0" --> C["j = pi[j-1]"]
+    C --> B
+    B -- "是" --> D["j++"]
+    B -- "否且 j = 0" --> E["处理下一个文本字符"]
+    D --> F{"j == |P|？"}
+    F -- "否" --> E
+    F -- "是" --> G["记录起点 i-|P|+1"]
+    G --> H["j = pi[j-1]"]
+    H --> E
 ```
 
-## 分步执行过程（示例输入）
+```cpp
+vector<int> kmpSearch(const string& text, const string& pattern) {
+    vector<int> positions;
+    if (pattern.empty()) return positions;
 
-示例：
-
-- 文本串 `S = "ababcabcabababd"`
-- 模式串 `P = "ababd"`
-
-先构建 `P` 的 `pi`：
-
-- `pi = [0, 0, 1, 2, 0]`
-
-匹配时令 `i` 扫描 `S`，`j` 表示已匹配的模式串长度。
-
-1. `i=0..3` 时，`S` 前四个字符与 `P` 前四个字符匹配，`j` 逐步变为 4。
-2. 在 `i=4` 处失配（`S[i]='c'`，`P[j]='d'`）：
-   - 回退 `j = pi[3] = 2`
-   - 继续比较，若仍失配，再回退 `j = pi[1] = 0`
-3. 文本串指针 `i` 不回退，继续向后扫。
-4. 当扫到 `i=14` 时，`j` 达到 5（即 `m`），说明匹配成功，起点是
-
-$$
-i-m+1 = 14-5+1 = 10
-$$
-
-得到模式串在文本串中的一次出现位置 `10`（0-based）。
-
-## 示例题（基础应用）
-
-### 题目（示例题）
-
-给定文本串 `S` 和模式串 `P`，输出 `P` 在 `S` 中所有出现位置（从 0 开始）。
-
-### 思路分析
-
-- 先用模式串构建 `pi`。
-- 扫描文本串并维护 `j`。
-- 每当 `j==m`，记录一次答案位置 `i-m+1`，然后令 `j=pi[j-1]` 继续找下一个。
-
-这样能自然处理重叠匹配，例如 `S="aaaaa"`，`P="aaa"` 会得到位置 `0,1,2`。
-
-## 伪代码
-
-```text
-function build_pi(P):
-	m = len(P)
-	pi[0] = 0
-	j = 0
-	for i in [1 .. m-1]:
-		while j > 0 and P[i] != P[j]:
-			j = pi[j-1]
-		if P[i] == P[j]:
-			j = j + 1
-		pi[i] = j
-	return pi
-
-function kmp_search(S, P):
-	pi = build_pi(P)
-	ans = empty list
-	j = 0
-	for i in [0 .. len(S)-1]:
-		while j > 0 and S[i] != P[j]:
-			j = pi[j-1]
-		if S[i] == P[j]:
-			j = j + 1
-		if j == len(P):
-			ans.push_back(i - len(P) + 1)
-			j = pi[j-1]
-	return ans
+    vector<int> pi = prefixFunction(pattern);
+    for (int i = 0, j = 0; i < (int)text.size(); ++i) {
+        while (j > 0 && text[i] != pattern[j]) j = pi[j - 1];
+        if (text[i] == pattern[j]) ++j;
+        if (j == (int)pattern.size()) {
+            positions.push_back(i - (int)pattern.size() + 1);
+            j = pi[j - 1];
+        }
+    }
+    return positions;
+}
 ```
 
-## C++17 参考实现（可运行）
+每个文本字符使 `j` 至多增加一次；回退总次数同样受增加次数限制。匹配时间 $O(n)$，加上构造 `pi` 的 $O(m)$，总时间 $O(n+m)$，额外空间 $O(m)$。
+
+## 5. 真实例题：洛谷 P3375「KMP 字符串匹配」
+
+[题目链接](https://www.luogu.com.cn/problem/P3375)
+
+题目要求输出模式串在文本串中的所有出现位置（1-based），再输出模式串的前缀函数。它直接检验三个容易遗漏的细节：匹配位置要转换下标；相邻答案可以重叠；匹配完成后仍要沿 `pi` 回退。
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
-// 构建前缀函数 pi，pi[i] 表示 P[0..i] 的最长真前后缀长度
-vector<int> buildPi(const string& p) {
-	int m = (int)p.size();
-	vector<int> pi(m, 0);
-	for (int i = 1, j = 0; i < m; ++i) {
-		// 失配时不断回退，直到可匹配或退到 0
-		while (j > 0 && p[i] != p[j]) j = pi[j - 1];
-		if (p[i] == p[j]) ++j;
-		pi[i] = j;
-	}
-	return pi;
-}
-
-// 返回模式串 p 在文本串 s 中的所有匹配起点（0-based）
-vector<int> kmpSearch(const string& s, const string& p) {
-	vector<int> ans;
-	if (p.empty()) return ans; // 约定：空模式串不处理
-
-	vector<int> pi = buildPi(p);
-	int n = (int)s.size(), m = (int)p.size();
-	for (int i = 0, j = 0; i < n; ++i) {
-		while (j > 0 && s[i] != p[j]) j = pi[j - 1];
-		if (s[i] == p[j]) ++j;
-		if (j == m) {
-			ans.push_back(i - m + 1);
-			j = pi[j - 1]; // 继续寻找下一个（含重叠）匹配
-		}
-	}
-	return ans;
+vector<int> prefixFunction(const string& s) {
+    vector<int> pi(s.size());
+    for (int i = 1, j = 0; i < (int)s.size(); ++i) {
+        while (j > 0 && s[i] != s[j]) j = pi[j - 1];
+        if (s[i] == s[j]) ++j;
+        pi[i] = j;
+    }
+    return pi;
 }
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-	string s, p;
-	cin >> s >> p;
+    string text, pattern;
+    cin >> text >> pattern;
+    vector<int> pi = prefixFunction(pattern);
 
-	vector<int> pos = kmpSearch(s, p);
-	if (pos.empty()) {
-		cout << -1 << '\n';
-	} else {
-		for (int i = 0; i < (int)pos.size(); ++i) {
-			if (i) cout << ' ';
-			cout << pos[i];
-		}
-		cout << '\n';
-	}
-	return 0;
+    for (int i = 0, j = 0; i < (int)text.size(); ++i) {
+        while (j > 0 && text[i] != pattern[j]) j = pi[j - 1];
+        if (text[i] == pattern[j]) ++j;
+        if (j == (int)pattern.size()) {
+            cout << i - (int)pattern.size() + 2 << '\n'; // 转成 1-based
+            j = pi[j - 1];
+        }
+    }
+
+    for (int x : pi) cout << x << ' ';
+    cout << '\n';
+    return 0;
 }
 ```
 
-## 时间复杂度与空间复杂度
+## 6. `pi` 比匹配结果多提供了什么
 
-- 构建前缀函数：$O(m)$
-- 匹配过程：$O(n)$
-- 总时间复杂度：$O(n+m)$
-- 额外空间复杂度：$O(m)$
+模式串出现位置只是 KMP 的一个用途。`pi` 还直接给出：
 
-## 适当扩展：循环串匹配思路
+- 每个前缀的最长 Border；
+- 沿失配链枚举全部 Border；
+- 最小周期与循环节；
+- 失配树上的祖先关系；
+- KMP 自动机的状态回退。
 
-若要判断 `B` 是否是 `A` 的循环位移，可把 `A+A` 作为文本串，在其中做一次 KMP 查找 `B`：
+这些应用统一放在 [Border、周期与失配树](border-period.md)，避免把基础匹配和所有扩展挤在同一页。
 
-- 若 `|A| \neq |B|`，一定不是
-- 若 `B` 是 `A` 的循环位移，则 `B` 必定是 `A+A` 的子串
+## 常见错误
 
-这是 KMP 在线性匹配场景下的经典扩展。
-
-## 常见错误与边界情况
-
-- 把 `pi` 和某版本 `next` 的下标定义混用，导致回退位置错一位。
-- 失配时只回退一次而不是循环回退（应使用 `while`）。
-- 找到一个匹配后忘记 `j = pi[j-1]`，导致漏掉重叠答案。
-- 忽略空模式串约定，访问 `p[0]` 可能越界。
-- 只记公式不记直觉：回退的本质是“已匹配后缀可复用”。
+- 把 `pi[i]` 理解成“下一次比较的位置”而不是长度，造成 `pi[j]` 与 `pi[j-1]` 混用。
+- 构造 `pi` 或匹配时，失配只回退一次；候选可能连续失败，必须使用 `while`。
+- 找到答案后把 `j` 清零，漏掉 `aaaaa` 中 `aaa` 的重叠出现。
+- 模式串为空时仍访问 `pattern[0]`；竞赛题通常不含空串，但可复用函数应明确约定。
+- 为满足某道题的 Border 长度限制而修改前缀函数构造。标准 `pi` 的正确性依赖它始终保存最长 Border；额外限制应在构造完成后处理。

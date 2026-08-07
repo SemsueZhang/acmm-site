@@ -83,10 +83,14 @@ nav:
       - 强连通分量与割点割边: algorithms/graph/connectivity.md
     - 字符串:
       - algorithms/strings/index.md
+      - 字符串基础: algorithms/strings/basics.md
       - KMP: algorithms/strings/kmp.md
+      - Border、周期与失配树: algorithms/strings/border-period.md
       - Trie: algorithms/strings/trie.md
       - 字符串哈希: algorithms/strings/hash.md
       - Manacher: algorithms/strings/manacher.md
+      - Z 函数（NOI 级拓展）: algorithms/strings/z-function.md
+      - 后缀数组（NOI 级拓展）: algorithms/strings/suffix-array.md
     - 数学:
       - algorithms/math/index.md
       - 数论基础: algorithms/math/number-theory.md
