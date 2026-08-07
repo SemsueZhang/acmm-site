@@ -16,7 +16,7 @@
         <link rel="prev" href="../graph/connectivity/">
       
       
-        <link rel="next" href="kmp/">
+        <link rel="next" href="basics/">
       
       
         
@@ -1735,6 +1735,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1794,6 +1802,34 @@
   
   
     <li class="md-nav__item">
+      <a href="basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    字符串基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="kmp/" class="md-nav__link">
         
   
@@ -1802,6 +1838,34 @@
     
   
     KMP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="border-period/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Border、周期与失配树
   
 
     
@@ -1886,6 +1950,62 @@
     
   
     Manacher
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="z-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Z 函数（NOI 级拓展）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="suffix-array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    后缀数组（NOI 级拓展）
   
 
     
@@ -3091,6 +3211,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#noip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NOIP 提高级主线
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#noi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NOI 级拓展
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        如何阅读一篇算法讲义
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        写作参考
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3107,14 +3279,30 @@
 
 
 <h1 id="_1">字符串算法</h1>
-<p>字符串题的核心是复用已经比较过的信息。</p>
+<p>字符串算法看似各不相同，其实反复在做一件事：<strong>把已经比较过的字符关系保存下来，下一步尽量复用，而不是从头比较</strong>。</p>
+<p>例如，KMP 保存前缀与后缀的重合，Manacher 保存回文区间的对称信息，Z 函数保存后缀与整串前缀的重合，后缀数组则把所有后缀排成有序序列。学习时最值得追问的不是“模板有几行”，而是：旧信息为什么足以确定一部分新答案？剩下的暴力扩展为什么总量可控？</p>
+<h2 id="noip">NOIP 提高级主线</h2>
+<ol>
+<li><a href="basics/">字符串基础</a>：子串、子序列、前缀、后缀、LCP、Border 与周期等统一术语。</li>
+<li><a href="kmp/">KMP</a>：从一次具体失配推导前缀函数与线性匹配。</li>
+<li><a href="border-period/">Border 与周期</a>：沿前缀函数链解决循环节和前后缀问题。</li>
+<li><a href="trie/">Trie</a>：把许多字符串的公共前缀合并成一棵树。</li>
+<li><a href="hash/">字符串哈希</a>：用可组合的数值指纹快速比较子串。</li>
+<li><a href="manacher/">Manacher</a>：复用最右回文区间，线性求奇偶回文半径。</li>
+</ol>
+<h2 id="noi">NOI 级拓展</h2>
 <ul>
-<li><a href="kmp/">KMP</a>：单模式串匹配与前缀函数，<span class="arithmatex">\(O(n+m)\)</span>。</li>
-<li><a href="trie/">Trie</a>：多字符串的前缀查询，操作 <span class="arithmatex">\(O(|s|)\)</span>。</li>
-<li><a href="hash/">字符串哈希</a>：<span class="arithmatex">\(O(1)\)</span> 比较子串指纹，存在极小碰撞概率。</li>
-<li><a href="manacher/">Manacher</a>：线性求所有回文半径。</li>
+<li><a href="z-function/">Z 函数（扩展 KMP）</a>：求每个后缀与整串的最长公共前缀。</li>
+<li><a href="suffix-array/">后缀数组</a>：对所有后缀排序，并用 LCP 数组处理重复子串问题。</li>
 </ul>
-<p>建议先掌握 KMP 的“前后缀复用”，再学字符串哈希；Manacher 是 2025 大纲调整到提高级的较难知识点。</p>
+<div class="admonition info">
+<p class="admonition-title">范围说明</p>
+<p>按 2025 年修订版竞赛大纲，KMP 与 Manacher 属于提高级；Z 函数、后缀数组属于 NOI 级。拓展页用于建立更完整的字符串知识体系，不要求 NOIP 备赛者一开始掌握。</p>
+</div>
+<h2 id="_2">如何阅读一篇算法讲义</h2>
+<p>每篇正文按以下节奏组织：先用真实问题说明朴素方法浪费在哪里，再定义算法维护的信息，证明转移和复杂度，最后用模板题或经典题展示这些信息怎样参与解题。代码统一使用 C++17 和 0-based 下标；若题目输出使用 1-based，会在对应位置明确转换。</p>
+<h2 id="_3">写作参考</h2>
+<p>本章在讲解节奏上参考了 Alex Wei 的<a href="https://www.cnblogs.com/alex-wei/p/Common_String_Theory_Theory.html">《常见字符串算法》</a>：核心性质展开证明，常规步骤保持简洁，并用例题展示信息的实际用途。本站重新划分了章节、示例和代码，所有正文均为独立撰写。</p>
 
 
 

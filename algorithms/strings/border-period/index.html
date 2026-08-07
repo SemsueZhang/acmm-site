@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://SemsueZhang.github.io/acmm-site/algorithms/graph/mst/">
+        <link rel="canonical" href="https://SemsueZhang.github.io/acmm-site/algorithms/strings/border-period/">
       
       
-        <link rel="prev" href="../shortest-path/">
+        <link rel="prev" href="../kmp/">
       
       
-        <link rel="next" href="../toposort/">
+        <link rel="next" href="../trie/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>最小生成树 - SYSU::ACMM</title>
+        <title>Border、周期与失配树 - SYSU::ACMM</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#border" class="md-skip">
           跳转至
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              最小生成树
+              Border、周期与失配树
             
           </span>
         </div>
@@ -1463,8 +1463,6 @@
                 
   
   
-    
-  
   
   
     
@@ -1493,15 +1491,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../graph/" class="md-nav__link ">
               
   
   
@@ -1525,7 +1523,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1545,7 +1543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../graph/" class="md-nav__link">
         
   
   
@@ -1573,7 +1571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../shortest-path/" class="md-nav__link">
+      <a href="../../graph/shortest-path/" class="md-nav__link">
         
   
   
@@ -1581,6 +1579,265 @@
     
   
     最短路
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/mst/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    最小生成树
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/toposort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    拓扑排序
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/euler-bipartite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    欧拉路与二分图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/connectivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    强连通分量与割点割边
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    字符串
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    字符串
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    字符串基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kmp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KMP
   
 
     
@@ -1617,7 +1874,7 @@
   <span class="md-ellipsis">
     
   
-    最小生成树
+    Border、周期与失配树
   
 
     
@@ -1635,7 +1892,7 @@
   <span class="md-ellipsis">
     
   
-    最小生成树
+    Border、周期与失配树
   
 
     
@@ -1661,22 +1918,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#kruskal" class="md-nav__link">
+  <a href="#1-border-border" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Kruskal：从边出发
+        1. 从最长 Border 得到全部 Border
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Kruskal：从边出发">
+    <nav class="md-nav" aria-label="1. 从最长 Border 得到全部 Border">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#ababa" class="md-nav__link">
     <span class="md-ellipsis">
       
-        为什么贪心正确：割性质
+        手算：ababa
       
     </span>
   </a>
@@ -1689,10 +1946,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prim" class="md-nav__link">
+  <a href="#2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prim：从点集向外扩张
+        2. 最小周期与最短循环节
       
     </span>
   </a>
@@ -1700,10 +1957,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#3-p4391" class="md-nav__link">
     <span class="md-ellipsis">
       
-        手算例题
+        3. 真实例题：洛谷 P4391「无线传输」
       
     </span>
   </a>
@@ -1711,10 +1968,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        最小生成森林
+        4. 统计每个前缀的出现次数
       
     </span>
   </a>
@@ -1722,10 +1979,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        易错点
+        5. 失配树
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见错误
       
     </span>
   </a>
@@ -1748,264 +2016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../toposort/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    拓扑排序
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../euler-bipartite/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    欧拉路与二分图
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../connectivity/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    强连通分量与割点割边
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../strings/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    字符串
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_7">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    字符串
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../strings/basics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    字符串基础
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../strings/kmp/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    KMP
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../strings/border-period/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Border、周期与失配树
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../strings/trie/" class="md-nav__link">
+      <a href="../trie/" class="md-nav__link">
         
   
   
@@ -2033,7 +2044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../strings/hash/" class="md-nav__link">
+      <a href="../hash/" class="md-nav__link">
         
   
   
@@ -2061,7 +2072,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../strings/manacher/" class="md-nav__link">
+      <a href="../manacher/" class="md-nav__link">
         
   
   
@@ -2089,7 +2100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../strings/z-function/" class="md-nav__link">
+      <a href="../z-function/" class="md-nav__link">
         
   
   
@@ -2117,7 +2128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../strings/suffix-array/" class="md-nav__link">
+      <a href="../suffix-array/" class="md-nav__link">
         
   
   
@@ -3337,22 +3348,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#kruskal" class="md-nav__link">
+  <a href="#1-border-border" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Kruskal：从边出发
+        1. 从最长 Border 得到全部 Border
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Kruskal：从边出发">
+    <nav class="md-nav" aria-label="1. 从最长 Border 得到全部 Border">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#ababa" class="md-nav__link">
     <span class="md-ellipsis">
       
-        为什么贪心正确：割性质
+        手算：ababa
       
     </span>
   </a>
@@ -3365,10 +3376,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prim" class="md-nav__link">
+  <a href="#2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prim：从点集向外扩张
+        2. 最小周期与最短循环节
       
     </span>
   </a>
@@ -3376,10 +3387,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#3-p4391" class="md-nav__link">
     <span class="md-ellipsis">
       
-        手算例题
+        3. 真实例题：洛谷 P4391「无线传输」
       
     </span>
   </a>
@@ -3387,10 +3398,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        最小生成森林
+        4. 统计每个前缀的出现次数
       
     </span>
   </a>
@@ -3398,10 +3409,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        易错点
+        5. 失配树
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见错误
       
     </span>
   </a>
@@ -3425,41 +3447,95 @@
 
 
 
-<h1 id="_1">最小生成树</h1>
-<p>给定带权无向连通图，生成树用 <span class="arithmatex">\(n-1\)</span> 条边连接所有点且无环；边权和最小的生成树叫最小生成树（MST）。它最小化的是总边权，不保证任意两点路径都最短。</p>
-<h2 id="kruskal">Kruskal：从边出发</h2>
-<p>按边权升序扫描，只选择连接两个不同连通块的边。并查集负责判断是否成环。</p>
-<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">Edge</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">w</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
-<span class="n">sort</span><span class="p">(</span><span class="n">edges</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">edges</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">Edge</span><span class="o">&amp;</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Edge</span><span class="o">&amp;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">w</span><span class="p">;</span>
-<span class="p">});</span>
-<span class="n">DSU</span><span class="w"> </span><span class="nf">dsu</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
-<span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">edges</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dsu</span><span class="p">.</span><span class="n">unite</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">answer</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">w</span><span class="p">;</span>
-<span class="w">        </span><span class="o">++</span><span class="n">used</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">used</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;No spanning tree</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<span class="k">else</span><span class="w"> </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<h1 id="border">Border、周期与失配树</h1>
+<p>KMP 不只是一个匹配模板。前缀函数 <code>pi[i]</code> 记录 <code>s[0..i]</code> 的最长 Border 长度；沿着 <code>pi</code> 不断回退，就能枚举一个前缀的所有 Border。这条回退链同时编码了字符串的周期结构。</p>
+<p>阅读本页前应先掌握 <a href="../kmp/">KMP</a> 中前缀函数的定义与构造。</p>
+<h2 id="1-border-border">1. 从最长 Border 得到全部 Border</h2>
+<p>令长度为 <span class="arithmatex">\(n\)</span> 的字符串最长 Border 长度为 <span class="arithmatex">\(b=\pi[n-1]\)</span>。如果 <span class="arithmatex">\(x\)</span> 是原串的 Border，那么 <span class="arithmatex">\(x\)</span> 的 Border 也一定是原串的 Border。因此：</p>
+<div class="highlight"><pre><span></span><code>b, pi[b-1], pi[pi[b-1]-1], ..., 0
 </code></pre></div>
-<p>复杂度由排序主导，为 <span class="arithmatex">\(O(m\log m)\)</span>。</p>
-<h3 id="_2">为什么贪心正确：割性质</h3>
-<p>把顶点分成两个非空集合称为一个割。跨过某个割的最轻边一定存在于某棵 MST 中。Kruskal 当前的连通块形成割，它选择的最轻可用边可安全加入；这就是交换论证在图上的形式。</p>
-<h2 id="prim">Prim：从点集向外扩张</h2>
-<p>维护已在生成树中的点集，每次选择一条连接点集内外的最轻边。邻接表加堆为 <span class="arithmatex">\(O(m\log n)\)</span>；邻接矩阵朴素实现为 <span class="arithmatex">\(O(n^2)\)</span>，适合稠密小图。</p>
-<h2 id="_3">手算例题</h2>
-<p>边为 <code>1-2(1), 2-3(2), 1-3(4), 3-4(1), 2-4(5)</code>。Kruskal 依次选 <code>1-2(1)</code>、<code>3-4(1)</code>、<code>2-3(2)</code>，此时四点连通，总权值 4；<code>1-3(4)</code> 会成环而跳过。</p>
-<h2 id="_4">最小生成森林</h2>
-<p>图不连通时不存在生成树，但 Kruskal 仍会在每个连通分量内得到一棵 MST，合起来称最小生成森林。题目若要求连接全部点，必须检查最终选边数是否为 <span class="arithmatex">\(n-1\)</span>。</p>
-<h2 id="_5">易错点</h2>
+<p>恰好给出所有 Border 长度，且严格递减。</p>
+<h3 id="ababa">手算：<code>ababa</code></h3>
+<p><code>pi=[0,0,1,2,3]</code>。最长 Border 长度是 3，对应 <code>"aba"</code>；继续跳到 <code>pi[2]=1</code>，得到 <code>"a"</code>；再跳到 0 结束。因此全部非空 Border 是 <code>"aba"</code>、<code>"a"</code>。</p>
+<div class="highlight"><pre><span></span><code><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">allBorders</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">pi</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lengths</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pi</span><span class="p">[</span><span class="n">len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span>
+<span class="w">        </span><span class="n">lengths</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">len</span><span class="p">);</span><span class="w"> </span><span class="c1">// 包含原串长度；若只要真 Border，先从 pi[n-1] 开始</span>
+<span class="w">    </span><span class="n">reverse</span><span class="p">(</span><span class="n">lengths</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">lengths</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">lengths</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>每次长度严格减小，枚举时间不超过 <span class="arithmatex">\(O(n)\)</span>。</p>
+<h2 id="2">2. 最小周期与最短循环节</h2>
+<p>设 <span class="arithmatex">\(b=\pi[n-1]\)</span>。最长 Border 与原串重合了 <span class="arithmatex">\(b\)</span> 个字符，所以候选最小周期为：</p>
+<div class="arithmatex">\[
+p=n-b.
+\]</div>
+<p>这里要区分两个问题：</p>
 <ul>
-<li>在有向图上套 MST。</li>
-<li>忘记连通性检查。</li>
-<li>权值和用 <code>int</code> 溢出。</li>
-<li>把 Prim 的“最小入边”与 Dijkstra 的“源点最短距离”混淆。</li>
+<li>求最小<strong>周期</strong>：答案总是 <span class="arithmatex">\(n-\pi[n-1]\)</span>。</li>
+<li>求能完整重复得到原串的最短<strong>循环节</strong>：还必须满足 <span class="arithmatex">\(n\bmod p=0\)</span>；否则循环节长度是 <span class="arithmatex">\(n\)</span>。</li>
+</ul>
+<p>例如 <code>"abababa"</code> 的 <code>pi[6]=5</code>，最小周期为 2，因为向右平移 2 后重叠部分相同；但 <span class="arithmatex">\(7\)</span> 不能被 2 整除，所以它不能由 <code>"ab"</code> 完整重复得到。</p>
+<h2 id="3-p4391">3. 真实例题：洛谷 P4391「无线传输」</h2>
+<p><a href="https://www.luogu.com.cn/problem/P4391">题目链接</a></p>
+<p>题目给出的字符串是某个周期信号的一段连续片段，要求最短周期长度。这里不要求字符串由循环节完整重复，因此直接输出 <span class="arithmatex">\(n-\pi[n-1]\)</span>。</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ios</span><span class="o">::</span><span class="n">sync_with_stdio</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cin</span><span class="p">.</span><span class="n">tie</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+<span class="w">    </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pi</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pi</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pi</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>构造 <code>pi</code> 为 <span class="arithmatex">\(O(n)\)</span>，其余操作 <span class="arithmatex">\(O(1)\)</span>，额外空间 <span class="arithmatex">\(O(n)\)</span>。</p>
+<h2 id="4">4. 统计每个前缀的出现次数</h2>
+<p>设 <code>cnt[len]</code> 表示长度为 <code>len</code> 的前缀在整个字符串中出现多少次。每个位置 <code>i</code> 至少使前缀 <code>s[0..pi[i)-1]</code> 出现一次；更长 Border 的出现也会沿失配链贡献给更短 Border。</p>
+<div class="highlight"><pre><span></span><code><span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">prefixOccurrences</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">pi</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cnt</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">++</span><span class="n">cnt</span><span class="p">[</span><span class="n">pi</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="o">--</span><span class="n">len</span><span class="p">)</span>
+<span class="w">        </span><span class="n">cnt</span><span class="p">[</span><span class="n">pi</span><span class="p">[</span><span class="n">len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">cnt</span><span class="p">[</span><span class="n">len</span><span class="p">];</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">len</span><span class="p">)</span><span class="w"> </span><span class="o">++</span><span class="n">cnt</span><span class="p">[</span><span class="n">len</span><span class="p">];</span><span class="w"> </span><span class="c1">// 前缀自身出现一次</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>为什么要从长到短累加？长度 <code>len</code> 的前缀每出现一次，它的最长 Border <code>pi[len-1]</code> 也随之出现一次；后者再把贡献传给更短 Border。依赖方向正是从长前缀指向短前缀。</p>
+<h2 id="5">5. 失配树</h2>
+<p>把每个前缀长度看作节点，并连接父边：</p>
+<div class="arithmatex">\[
+parent(len)=\pi[len-1],\qquad len\ge1.
+\]</div>
+<p>因为父节点编号严格更小，这些边形成一棵以 0 为根的树。节点 <span class="arithmatex">\(u\)</span> 是节点 <span class="arithmatex">\(v\)</span> 的祖先，当且仅当长度 <span class="arithmatex">\(u\)</span> 的前缀是长度 <span class="arithmatex">\(v\)</span> 前缀的 Border。</p>
+<pre class="mermaid"><code>graph TD
+    Z["0：空前缀"] --&gt; A["1"]
+    Z --&gt; B["2"]
+    A --&gt; C["3"]
+    B --&gt; D["4"]
+    C --&gt; E["5"]</code></pre>
+<p>失配树让 Border 关系变成祖先关系：两个前缀的最长公共 Border 可以转成树上 LCA；一个前缀是多少更长前缀的 Border，可以转成子树统计。这属于 KMP 信息与树算法的结合，不必把复杂逻辑硬塞回求 <code>pi</code> 的循环。</p>
+<h2 id="_1">常见错误</h2>
+<ul>
+<li>把“最小周期”和“最短整循环节”混为一谈，漏掉整除判断。</li>
+<li>为满足题目额外限制而修改 <code>pi</code> 的定义；应先求标准前缀函数，再沿失配链筛选。</li>
+<li>枚举 Border 时写成 <code>len=pi[len]</code>，产生错位或越界。</li>
+<li>统计出现次数时从短到长传递，依赖顺序相反。</li>
+<li>忘记给每个前缀自身的一次出现加 1。</li>
 </ul>
 
 
