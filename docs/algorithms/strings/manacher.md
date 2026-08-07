@@ -1,67 +1,207 @@
 # Manacher 算法
 
-Manacher 在线性时间内求每个位置为中心的最长回文半径。它复用已知回文区间的对称信息，避免从每个中心重复向两侧扩展。
+Manacher（马拉车）算法在线性时间内求出以每个位置为中心的最长回文半径。它解决的关键问题是：中心扩展已经比较过的字符，能不能被后面的中心复用？
 
-## 统一奇偶回文
+## 从中心扩展开始
 
-在原字符之间和两端插入分隔符。例如 `abba` 变成 `#a#b#b#a#`。变换后所有回文长度都是奇数：原串偶回文 `abba` 也有明确中心 `#`。
+判断一个位置附近的最长回文，最直接的方法是从中心向两边扩展：
 
-为避免越界，可再加两个不同哨兵：`^#a#b#b#a#$`。令 `p[i]` 表示以 `i` 为中心、向一侧能扩展的最大步数。
+- 奇回文以一个字符为中心，如 `abacaba`；
+- 偶回文以两个字符之间为中心，如 `abba`。
 
-## 镜像复用
+单个中心最多扩展 $O(n)$，共有 $O(n)$ 个中心，最坏复杂度是 $O(n^2)$。例如所有字符都相同的字符串，每个中心都会反复比较大量相同字符。
 
-维护目前右端点最远的回文区间，其中心为 `center`、右端（开边界）为 `right`。
+Manacher 的改进思路是维护**当前右端点最靠右的回文区间**，利用其中的左右对称关系，给新中心一个已知的初始半径。
 
-- 若 `i < right`，镜像位置 `mirror=2*center-i`，可先令 `p[i]=min(right-i,p[mirror])`。
-- 然后从该半径继续暴力扩展。
-- 若 `i+p[i]` 超过 `right`，更新最右区间。
+## 两套半径数组
+
+这里不插入分隔符，分别处理奇、偶回文，能避免变换串和原串之间的下标换算。
+
+### 奇回文数组 `d1`
+
+`d1[i]` 表示以 `s[i]` 为中心的最长奇回文半径，**包含中心本身**：
+
+$$
+s[i-d1[i]+1\dots i+d1[i]-1].
+$$
+
+例如 `abacaba` 的中心字符 `c` 对应 `d1[3]=4`，回文长度为：
+
+$$
+2d1[3]-1=7.
+$$
+
+### 偶回文数组 `d2`
+
+`d2[i]` 表示以 `s[i-1]` 和 `s[i]` 之间为中心的最长偶回文半径：
+
+$$
+s[i-d2[i]\dots i+d2[i]-1].
+$$
+
+例如 `abba` 中间的中心在 `i=2`，有 `d2[2]=2`，回文长度为 $2d2[2]=4$。
+
+## 最右回文区间如何复用
+
+维护闭区间 $[l,r]$，它是已经求出的、右端点最大的回文区间。
+
+求奇回文中心 `i` 时：
+
+- 若 `i > r`，没有已知信息，从半径 1 开始扩展；
+- 若 `i <= r`，它关于区间中心的镜像位置是 `l+r-i`；
+- 镜像半径可复用，但不能越过右边界，所以初值为
+
+$$
+d1[i]=\min(d1[l+r-i],\ r-i+1).
+$$
+
+```mermaid
+flowchart LR
+    L["l"] --- M["镜像位置"] --- C["区间中心"] --- I["当前中心 i"] --- R["r"]
+```
+
+初值覆盖的部分已经由对称性保证是回文。接下来只需从已知边界继续向外比较；若得到更靠右的回文，就更新 $[l,r]$。
+
+偶回文完全同理，只是镜像下标与初始半径公式有一位差别。
+
+## 完整模板
 
 ```cpp
-vector<int> manacher(const string& s) {
-    string t = "^";
-    for (char c : s) { t += '#'; t += c; }
-    t += "#$";
-
-    vector<int> p(t.size());
-    int center = 0, right = 0;
-    for (int i = 1; i + 1 < (int)t.size(); ++i) {
-        int mirror = 2 * center - i;
-        if (i < right) p[i] = min(right - i, p[mirror]);
-        while (t[i + 1 + p[i]] == t[i - 1 - p[i]]) ++p[i];
-        if (i + p[i] > right) {
-            center = i;
-            right = i + p[i];
+// d1[i]：以 i 为中心的最长奇回文半径，包含中心
+vector<int> manacherOdd(const string& s) {
+    int n = s.size();
+    vector<int> d1(n);
+    for (int i = 0, l = 0, r = -1; i < n; ++i) {
+        int k = (i > r) ? 1 : min(d1[l + r - i], r - i + 1);
+        while (i - k >= 0 && i + k < n && s[i - k] == s[i + k])
+            ++k;
+        d1[i] = k;
+        if (i + k - 1 > r) {
+            l = i - k + 1;
+            r = i + k - 1;
         }
     }
-    return p;
+    return d1;
+}
+
+// d2[i]：以 i-1 与 i 之间为中心的最长偶回文半径
+vector<int> manacherEven(const string& s) {
+    int n = s.size();
+    vector<int> d2(n);
+    for (int i = 0, l = 0, r = -1; i < n; ++i) {
+        int k = (i > r) ? 0 : min(d2[l + r - i + 1], r - i + 1);
+        while (i - k - 1 >= 0 && i + k < n &&
+               s[i - k - 1] == s[i + k])
+            ++k;
+        d2[i] = k;
+        if (i + k - 1 > r) {
+            l = i - k;
+            r = i + k - 1;
+        }
+    }
+    return d2;
 }
 ```
 
-## 为什么是 $O(n)$
+## 为什么总复杂度是线性的
 
-镜像能确定的部分不再比较。`while` 成功扩展且产生新工作时，会推动全局 `right` 向右；`right` 总共最多移动 $O(n)$ 次。失败比较每个中心至多一次，因此总时间 $O(n)$。
+看起来每个中心仍有一个 `while`，但成功扩展只有两种情况：
 
-## 例题：最长回文子串
+1. 扩展发生在旧的 $r$ 以内：这部分由镜像初值直接跳过，不会逐字符重做；
+2. 扩展超过旧的 $r$：每成功一次，最右端点 $r$ 至少右移一格。
 
-`s="babad"`。变换后算法会得到某个中心半径 3，对应原串长度也是 3，可取 `bab` 或 `aba`。最大回文长度就是 `max(p[i])`。
+$r$ 最多从 $-1$ 移到 $n-1$，因此所有成功扩展合计 $O(n)$；每个中心至多再有一次失败比较，所以总时间为 $O(n)$，空间为 $O(n)$。
 
-若最大半径为 `len`、变换串中心为 `i`，原串起点可由 `(i-len)/2` 得到：
+## 例题：P3805【模板】manacher
+
+[洛谷 P3805【模板】manacher](https://www.luogu.com.cn/problem/P3805)：求一个字符串的最长回文子串长度。
+
+分别计算奇、偶半径：
+
+- 奇回文长度为 $2d1[i]-1$；
+- 偶回文长度为 $2d2[i]$。
+
+取所有中心的最大值即可。
 
 ```cpp
-int bestCenter = max_element(p.begin(), p.end()) - p.begin();
-int len = p[bestCenter];
-int start = (bestCenter - len) / 2;
-cout << s.substr(start, len) << '\n';
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> manacherOdd(const string& s) {
+    int n = s.size();
+    vector<int> d1(n);
+    for (int i = 0, l = 0, r = -1; i < n; ++i) {
+        int k = (i > r) ? 1 : min(d1[l + r - i], r - i + 1);
+        while (i - k >= 0 && i + k < n && s[i - k] == s[i + k]) ++k;
+        d1[i] = k;
+        if (i + k - 1 > r) l = i - k + 1, r = i + k - 1;
+    }
+    return d1;
+}
+
+vector<int> manacherEven(const string& s) {
+    int n = s.size();
+    vector<int> d2(n);
+    for (int i = 0, l = 0, r = -1; i < n; ++i) {
+        int k = (i > r) ? 0 : min(d2[l + r - i + 1], r - i + 1);
+        while (i - k - 1 >= 0 && i + k < n && s[i - k - 1] == s[i + k]) ++k;
+        d2[i] = k;
+        if (i + k - 1 > r) l = i - k, r = i + k - 1;
+    }
+    return d2;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    string s;
+    cin >> s;
+    vector<int> d1 = manacherOdd(s);
+    vector<int> d2 = manacherEven(s);
+
+    int answer = 0;
+    for (int x : d1) answer = max(answer, 2 * x - 1);
+    for (int x : d2) answer = max(answer, 2 * x);
+    cout << answer << '\n';
+    return 0;
+}
 ```
 
-### 统计回文子串数
+## 进一步应用
 
-在上述带 `#` 变换中，中心 $i$ 对原串贡献 `(p[i]+1)/2` 个非空回文子串；对所有中心求和即可。重复出现位置算不同子串。
+### 统计回文子串个数
+
+固定中心时，每缩短一层仍然是回文。因此：
+
+- 奇中心 `i` 贡献 `d1[i]` 个回文子串；
+- 偶中心 `i` 贡献 `d2[i]` 个回文子串。
+
+答案为：
+
+$$
+\sum_i d1[i]+\sum_i d2[i].
+$$
+
+这里相同内容出现在不同位置会分别计数；若要求不同回文串的数量，需要额外的数据结构。
+
+### 判断一个区间是否为回文
+
+对区间 `[l,r]`：
+
+- 长度为奇数时，中心是 `(l+r)/2`，检查对应 `d1` 是否覆盖区间；
+- 长度为偶数时，中心右侧下标是 `(l+r+1)/2`，检查对应 `d2`。
+
+预处理后每次判断为 $O(1)$，而且没有哈希碰撞。
 
 ## 易错点
 
-- `right` 到底表示包含端点还是开边界定义不统一。
-- 镜像下标在 `i>=right` 时仍被访问。
-- 哨兵字符可能出现在原字符串中。
-- 变换串位置映射回原串时错一位。
-- 把回文子串数量和不同回文字符串数量混淆；后者不能只靠 Manacher 半径直接去重。
+- 混淆半径与长度：奇回文长度是 `2*d1[i]-1`，偶回文长度是 `2*d2[i]`。
+- `d1` 的半径包含中心，`d2` 的半径可以为 0。
+- 一会儿把 $r$ 当闭区间端点，一会儿又当开边界。
+- 偶回文镜像位置照搬奇回文公式，漏掉 `+1`。
+- 只计算奇回文，因而漏掉 `abba` 一类答案。
+
+## 小结
+
+Manacher 的核心并不是难记的下标，而是一个和 Z 函数相似的思想：维护最靠右的已知匹配区间，先复用区间内部的信息，只对新区间以外的字符做比较。明确 `d1`、`d2` 的含义后，转移式和复杂度证明都会自然许多。
