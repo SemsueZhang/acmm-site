@@ -47,6 +47,41 @@ void dfs(int u, int parent) {
 
 进入节点时记录 `tin[u]=++timer`，遍历完子树后记录 `tout[u]=timer`。则 $u$ 的整棵子树恰对应连续区间 `[tin[u],tout[u]]`。因此子树修改/查询可以转成数组区间问题，再配合树状数组或线段树。
 
+## 真题：P1030 求先序排列
+
+[洛谷 P1030 求先序排列](https://www.luogu.com.cn/problem/P1030) 给出一棵二叉树的中序与后序遍历，要求还原先序遍历。
+
+后序序列最后一个字符一定是当前子树根；在中序序列中找到根后，左边是左子树，右边是右子树。输出先序时先输出根，再递归左、右子树。这个过程同时说明：中序加后序在节点互异时可以唯一确定二叉树。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+string inorder, postorder;
+
+void printPreorder(int inLeft, int inRight, int postLeft, int postRight) {
+    if (inLeft > inRight) return;
+    char root = postorder[postRight];
+    cout << root;
+    int rootPosition = inorder.find(root, inLeft);
+    int leftSize = rootPosition - inLeft;
+    printPreorder(inLeft, rootPosition - 1,
+                  postLeft, postLeft + leftSize - 1);
+    printPreorder(rootPosition + 1, inRight,
+                  postLeft + leftSize, postRight - 1);
+}
+
+int main() {
+    cin >> inorder >> postorder;
+    int n = inorder.size();
+    printPreorder(0, n - 1, 0, n - 1);
+    cout << '\n';
+    return 0;
+}
+```
+
+本题节点数较小，直接查找根为 $O(n^2)$。若节点很多，可预处理“字符或编号到中序位置”的映射，使递归总时间降为 $O(n)$。
+
 ## 易错点
 
 - 把普通图直接当树 DFS，没有判环。

@@ -77,6 +77,48 @@ for (int k = 1; k < LOG; ++k)
 
 预处理 $O(n\log T)$，单次查询 $O(\log T)$。LCA 的倍增表完全同源。
 
+## 真题：P2678 跳石头
+
+[洛谷 P2678 跳石头](https://www.luogu.com.cn/problem/P2678) 允许移走至多 $m$ 块石头，要求最大化最短跳跃距离。固定候选距离 `limit` 后，从起点向右扫描：若当前石头离上一个保留石头不足 `limit`，为了满足距离只能移走当前石头。
+
+这个贪心使用的移除数最少，因此可以作为单调判定：`limit` 越大，越难满足。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int riverLength, stoneCount, removable;
+    cin >> riverLength >> stoneCount >> removable;
+    vector<int> position(stoneCount + 2);
+    for (int i = 1; i <= stoneCount; ++i) cin >> position[i];
+    position[stoneCount + 1] = riverLength;
+
+    auto feasible = [&](int limit) {
+        int removed = 0, lastKept = 0;
+        for (int i = 1; i <= stoneCount + 1; ++i) {
+            if (position[i] - position[lastKept] < limit) ++removed;
+            else lastKept = i;
+        }
+        return removed <= removable;
+    };
+
+    int left = 0, right = riverLength + 1; // [left 可行, right 不可行)
+    while (left + 1 < right) {
+        int middle = left + (right - left) / 2;
+        if (feasible(middle)) left = middle;
+        else right = middle;
+    }
+    cout << left << '\n';
+    return 0;
+}
+```
+
+一次判定 $O(n)$，二分 $O(\log L)$ 次，总时间 $O(n\log L)$、空间 $O(n)$。
+
 ## 易错点
 
 - 没有先证明 `check` 单调就二分。

@@ -46,6 +46,62 @@ for (int u : order)
 
 DFS 退出一个点时把它加入序列，最后反转得到拓扑序。用三色标记：0 未访问、1 在递归栈、2 已完成；遇到指向颜色 1 的边即发现环。
 
+## 真题：P4017 最大食物链计数
+
+[洛谷 P4017 最大食物链计数](https://www.luogu.com.cn/problem/P4017) 把“被吃者指向捕食者”看成有向边。生产者入度为 0，食物链在消费者出度为 0 处结束。定义 `ways[u]` 为到达 $u$ 的食物链条数，按拓扑序转移：
+
+$$
+ways[v]\mathrel{+}=ways[u].
+$$
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    const int MOD = 80112002;
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> graph(n + 1);
+    vector<int> indegree(n + 1), outdegree(n + 1), ways(n + 1);
+    while (m--) {
+        int from, to;
+        cin >> from >> to;
+        graph[from].push_back(to);
+        ++outdegree[from];
+        ++indegree[to];
+    }
+
+    queue<int> ready;
+    for (int vertex = 1; vertex <= n; ++vertex) {
+        if (indegree[vertex] == 0) {
+            ready.push(vertex);
+            ways[vertex] = 1;
+        }
+    }
+
+    while (!ready.empty()) {
+        int u = ready.front(); ready.pop();
+        for (int v : graph[u]) {
+            ways[v] = (ways[v] + ways[u]) % MOD;
+            if (--indegree[v] == 0) ready.push(v);
+        }
+    }
+
+    int answer = 0;
+    for (int vertex = 1; vertex <= n; ++vertex)
+        if (outdegree[vertex] == 0)
+            answer = (answer + ways[vertex]) % MOD;
+    cout << answer << '\n';
+    return 0;
+}
+```
+
+每条边只转移一次，时间 $O(n+m)$、空间 $O(n+m)$。若图中可能有环，处理点数不足 $n$ 时还应报告无合法拓扑序；本题的食物网保证相应结构可计数。
+
 ## 易错点
 
 - 无向图不存在通常意义下的拓扑序。

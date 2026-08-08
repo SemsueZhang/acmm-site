@@ -42,6 +42,63 @@ else cout << answer << '\n';
 
 图不连通时不存在生成树，但 Kruskal 仍会在每个连通分量内得到一棵 MST，合起来称最小生成森林。题目若要求连接全部点，必须检查最终选边数是否为 $n-1$。
 
+## 真题：P3366 最小生成树
+
+[洛谷 P3366【模板】最小生成树](https://www.luogu.com.cn/problem/P3366) 要求输出最小生成树权值；若图不连通则输出 `orz`。Kruskal 的完整实现如下。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Edge { int from, to, weight; };
+
+struct DSU {
+    vector<int> parent, size;
+    explicit DSU(int n) : parent(n + 1), size(n + 1, 1) {
+        iota(parent.begin(), parent.end(), 0);
+    }
+    int find(int x) {
+        return parent[x] == x ? x : parent[x] = find(parent[x]);
+    }
+    bool unite(int a, int b) {
+        a = find(a); b = find(b);
+        if (a == b) return false;
+        if (size[a] < size[b]) swap(a, b);
+        parent[b] = a;
+        size[a] += size[b];
+        return true;
+    }
+};
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m;
+    cin >> n >> m;
+    vector<Edge> edges(m);
+    for (Edge& edge : edges) cin >> edge.from >> edge.to >> edge.weight;
+    sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
+        return a.weight < b.weight;
+    });
+
+    DSU dsu(n);
+    long long answer = 0;
+    int usedEdges = 0;
+    for (Edge edge : edges) {
+        if (!dsu.unite(edge.from, edge.to)) continue;
+        answer += edge.weight;
+        if (++usedEdges == n - 1) break;
+    }
+
+    if (usedEdges == n - 1) cout << answer << '\n';
+    else cout << "orz\n";
+    return 0;
+}
+```
+
+排序为 $O(m\log m)$，并查集操作总计近似 $O(m)$，空间 $O(n+m)$。
+
 ## 易错点
 
 - 在有向图上套 MST。

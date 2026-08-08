@@ -57,6 +57,63 @@ for (int sub = mask; sub; sub = (sub - 1) & mask) {
 
 棋盘 DP 中可先枚举一行的所有掩码，筛掉相邻位同时为 1 的状态：`(mask & (mask<<1))==0`。再预处理任意两行是否冲突，避免 DP 内反复位运算。
 
+## 真题：P1896 互不侵犯
+
+[洛谷 P1896 互不侵犯](https://www.luogu.com.cn/problem/P1896) 要在 $n\times n$ 棋盘放置恰好 $k$ 个国王。用一个掩码表示一行：同一行不能相邻；相邻两行不能同列或斜向相邻。
+
+定义 `dp[row][used][state]` 为处理完前 `row` 行、共放 `used` 个国王、当前行状态为 `state` 的方案数。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n, target;
+    cin >> n >> target;
+
+    vector<int> states, countKings;
+    for (int mask = 0; mask < (1 << n); ++mask) {
+        if (mask & (mask << 1)) continue;
+        states.push_back(mask);
+        countKings.push_back(__builtin_popcount((unsigned)mask));
+    }
+
+    int stateCount = states.size();
+    vector<vector<int>> compatible(stateCount);
+    for (int current = 0; current < stateCount; ++current) {
+        for (int previous = 0; previous < stateCount; ++previous) {
+            int a = states[current], b = states[previous];
+            if ((a & b) || ((a << 1) & b) || ((a >> 1) & b)) continue;
+            compatible[current].push_back(previous);
+        }
+    }
+
+    vector<vector<long long>> previous(target + 1,
+        vector<long long>(stateCount));
+    previous[0][0] = 1; // states[0] 必为 0
+
+    for (int row = 1; row <= n; ++row) {
+        vector<vector<long long>> current(target + 1,
+            vector<long long>(stateCount));
+        for (int state = 0; state < stateCount; ++state) {
+            int added = countKings[state];
+            for (int used = added; used <= target; ++used)
+                for (int oldState : compatible[state])
+                    current[used][state] += previous[used - added][oldState];
+        }
+        previous.swap(current);
+    }
+
+    long long answer = 0;
+    for (int state = 0; state < stateCount; ++state)
+        answer += previous[target][state];
+    cout << answer << '\n';
+    return 0;
+}
+```
+
+设合法行状态数为 $S$，时间 $O(nkS^2)$、滚动后空间 $O(kS)$。预处理相容列表能避免在 DP 内反复检查全部位关系。
+
 ## 易错点
 
 - `1<<n` 用 `int` 溢出。

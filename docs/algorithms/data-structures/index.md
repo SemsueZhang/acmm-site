@@ -21,4 +21,4 @@
 - [并查集](union-find.md)
 - [树状数组](fenwick.md)、[线段树](segment-tree.md)
 - [哈希表](hash-table.md)、[Trie](../strings/trie.md)
-- [笛卡尔树与平衡树](advanced-trees.md)
+- [进阶树结构导读](advanced-trees.md)、[笛卡尔树](cartesian-tree.md)、[FHQ Treap](fhq-treap.md)

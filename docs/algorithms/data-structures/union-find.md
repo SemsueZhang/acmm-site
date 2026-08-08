@@ -42,6 +42,50 @@ struct DSU {
 
 若题目维护“朋友/敌人”这类相对关系，可令 `relation[x]` 表示 $x$ 到父亲的关系，并在路径压缩时累加（或异或）关系。核心仍是：集合根确定归属，根路径上的附加量确定相对关系。
 
+## 真题：P3367 并查集
+
+[洛谷 P3367【模板】并查集](https://www.luogu.com.cn/problem/P3367) 包含合并集合与查询连通性两类操作。它没有删边，也不要求输出路径，因此并查集比每次 DFS 更合适。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+struct DSU {
+    vector<int> parent, size;
+    explicit DSU(int n) : parent(n + 1), size(n + 1, 1) {
+        iota(parent.begin(), parent.end(), 0);
+    }
+    int find(int x) {
+        return parent[x] == x ? x : parent[x] = find(parent[x]);
+    }
+    void unite(int a, int b) {
+        a = find(a); b = find(b);
+        if (a == b) return;
+        if (size[a] < size[b]) swap(a, b);
+        parent[b] = a;
+        size[a] += size[b];
+    }
+};
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m;
+    cin >> n >> m;
+    DSU dsu(n);
+    while (m--) {
+        int type, x, y;
+        cin >> type >> x >> y;
+        if (type == 1) dsu.unite(x, y);
+        else cout << (dsu.find(x) == dsu.find(y) ? 'Y' : 'N') << '\n';
+    }
+    return 0;
+}
+```
+
+$m$ 次操作总复杂度 $O(m\alpha(n))$，空间 $O(n)$。
+
 ## 易错点
 
 - 直接写 `parent[a]=b`，没有先找根。

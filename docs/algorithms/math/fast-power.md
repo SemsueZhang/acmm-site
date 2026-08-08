@@ -36,6 +36,36 @@ $$
 
 固定 $k\times k$ 矩阵一次乘法 $O(k^3)$，快速幂为 $O(k^3\log n)$。适合“状态维度很小、递推次数极大”的线性递推。
 
+## 真题：P1226 快速幂
+
+[洛谷 P1226【模板】快速幂](https://www.luogu.com.cn/problem/P1226) 要计算 $a^b\bmod p$。指数可能很大，但二进制位数只有 $O(\log b)$。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+long long modularPower(long long base, long long exponent, long long modulus) {
+    base %= modulus;
+    long long result = 1 % modulus;
+    while (exponent > 0) {
+        if (exponent & 1LL) result = result * base % modulus;
+        base = base * base % modulus;
+        exponent >>= 1;
+    }
+    return result;
+}
+
+int main() {
+    long long base, exponent, modulus;
+    cin >> base >> exponent >> modulus;
+    cout << base << '^' << exponent << " mod " << modulus << '='
+         << modularPower(base, exponent, modulus) << '\n';
+    return 0;
+}
+```
+
+本题数据范围内 `long long` 足以保存乘积；更大模数应使用 `__int128` 或安全乘法。时间 $O(\log b)$、空间 $O(1)$。
+
 ## 易错点
 
 - `mod==1` 时初始结果应为 `1%mod=0`。

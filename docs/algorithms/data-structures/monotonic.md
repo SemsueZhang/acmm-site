@@ -55,6 +55,39 @@ $$
 
 右侧是长度固定窗口中的最大值，可用同样方法把 $O(nk)$ 降为 $O(n)$。先删除过期下标，再取队首转移，最后把新的 `dp[i]` 加入队列。
 
+## 真题：P5788 单调栈
+
+[洛谷 P5788【模板】单调栈](https://www.luogu.com.cn/problem/P5788) 要求每个位置右侧第一个严格更大的元素下标。扫描到 `a[i]` 时，栈中所有比它小的元素终于找到了答案，因此依次弹出并令答案为 `i`；没有被弹出的下标最终答案为 0。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    vector<int> a(n + 1), answer(n + 1), stackIndex;
+    for (int i = 1; i <= n; ++i) cin >> a[i];
+
+    for (int i = 1; i <= n; ++i) {
+        while (!stackIndex.empty() && a[stackIndex.back()] < a[i]) {
+            answer[stackIndex.back()] = i;
+            stackIndex.pop_back();
+        }
+        stackIndex.push_back(i);
+    }
+
+    for (int i = 1; i <= n; ++i)
+        cout << answer[i] << " \n"[i == n];
+    return 0;
+}
+```
+
+栈中下标对应的值单调不增。每个下标入栈、出栈至多一次，总时间 $O(n)$、空间 $O(n)$。
+
 ## 易错点
 
 - 单调方向与目标最值相反。

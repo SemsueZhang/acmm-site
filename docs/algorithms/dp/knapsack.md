@@ -55,6 +55,35 @@ dp[0] = 0;
 
 把 `max` 改为加法可统计方案数，但需明确物品是否有区别、顺序是否算不同。恢复选择方案时，可保留二维 DP，从 `(n,W)` 逆推：若 `dp[i][j] != dp[i-1][j]`，说明一种最优方案选择了物品 $i$。
 
+## 真题：P1048 采药
+
+[洛谷 P1048 采药](https://www.luogu.com.cn/problem/P1048) 中，每株草药有采集时间和价值，每株最多采一次，总时间有限。这三个条件分别对应 0/1 背包的体积、价值和容量。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int totalTime, herbs;
+    cin >> totalTime >> herbs;
+    vector<int> dp(totalTime + 1);
+
+    while (herbs--) {
+        int timeCost, value;
+        cin >> timeCost >> value;
+        for (int time = totalTime; time >= timeCost; --time)
+            dp[time] = max(dp[time], dp[time - timeCost] + value);
+    }
+    cout << dp[totalTime] << '\n';
+    return 0;
+}
+```
+
+容量倒序保证当前草药不会重复使用。时间 $O(MT)$、空间 $O(T)$，其中 $M$ 是草药数量、$T$ 是总时间。
+
 ## 易错点
 
 - 0/1 背包容量正序，导致一件物品被重复选。

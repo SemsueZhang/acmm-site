@@ -70,6 +70,54 @@ $x+y=3$，$2x-y=0$。第二行减两倍第一行得到 $-3y=-6$，所以 $y=2,x=
 
 在质数模 $p$ 下，把“除以主元”替换为乘主元逆元。若模数不是质数，非零元素不一定可逆，需要更谨慎的整数消元方法。
 
+## 真题：P3389 高斯消元
+
+[洛谷 P3389【模板】高斯消元法](https://www.luogu.com.cn/problem/P3389) 给出 $n$ 个方程和 $n$ 个未知数；若不存在唯一解则输出 `No Solution`。每列选择绝对值最大的主元，可以减轻浮点误差。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    vector<vector<double>> matrix(n, vector<double>(n + 1));
+    for (auto& row : matrix)
+        for (double& value : row) cin >> value;
+
+    const double EPS = 1e-9;
+    for (int column = 0; column < n; ++column) {
+        int pivot = column;
+        for (int row = column; row < n; ++row)
+            if (fabs(matrix[row][column]) > fabs(matrix[pivot][column]))
+                pivot = row;
+        if (fabs(matrix[pivot][column]) < EPS) {
+            cout << "No Solution\n";
+            return 0;
+        }
+        swap(matrix[pivot], matrix[column]);
+
+        double divisor = matrix[column][column];
+        for (int j = column; j <= n; ++j) matrix[column][j] /= divisor;
+        for (int row = 0; row < n; ++row) {
+            if (row == column) continue;
+            double factor = matrix[row][column];
+            for (int j = column; j <= n; ++j)
+                matrix[row][j] -= factor * matrix[column][j];
+        }
+    }
+
+    cout << fixed << setprecision(2);
+    for (int i = 0; i < n; ++i) cout << matrix[i][n] << '\n';
+    return 0;
+}
+```
+
+消元需要三层循环，时间 $O(n^3)$、空间 $O(n^2)$。更一般的线性方程组还需区分无解与无穷多解；本题把二者都归为“非唯一解”。
+
 ## 易错点
 
 - 矩阵维度不匹配仍相乘。

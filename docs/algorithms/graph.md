@@ -54,6 +54,56 @@ for (int u = 1; u <= n; ++u) {
 
 当 $m$ 远小于 $n^2$ 时称为稀疏图。提高组大图通常稀疏，应使用邻接表和 $O((n+m)\log n)$ 一类算法，而不是邻接矩阵与 $O(n^2)$ 扫描。
 
+## 真题：P1596 Lake Counting
+
+[洛谷 P1596 Lake Counting](https://www.luogu.com.cn/problem/P1596) 把每个有水格子看成顶点，八方向相邻看成边，问题就变成统计连通分量。每发现一个尚未访问的 `W`，启动一次 BFS 并把整个水域标记掉。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int rows, columns;
+    cin >> rows >> columns;
+    vector<string> grid(rows);
+    for (string& row : grid) cin >> row;
+
+    int dx[8] = {-1,-1,-1,0,0,1,1,1};
+    int dy[8] = {-1,0,1,-1,1,-1,0,1};
+    int components = 0;
+
+    for (int x = 0; x < rows; ++x) {
+        for (int y = 0; y < columns; ++y) {
+            if (grid[x][y] != 'W') continue;
+            ++components;
+            queue<pair<int,int>> cells;
+            cells.push({x, y});
+            grid[x][y] = '.';
+            while (!cells.empty()) {
+                auto [currentX, currentY] = cells.front();
+                cells.pop();
+                for (int direction = 0; direction < 8; ++direction) {
+                    int nextX = currentX + dx[direction];
+                    int nextY = currentY + dy[direction];
+                    if (nextX < 0 || nextX >= rows ||
+                        nextY < 0 || nextY >= columns) continue;
+                    if (grid[nextX][nextY] != 'W') continue;
+                    grid[nextX][nextY] = '.';
+                    cells.push({nextX, nextY});
+                }
+            }
+        }
+    }
+    cout << components << '\n';
+    return 0;
+}
+```
+
+每个格子最多入队一次，时间和空间都是 $O(rows\times columns)$。若题目只允许四方向相邻，方向数组必须相应修改。
+
 ## 易错点
 
 - 无向边忘记加入两个方向，或误加两次导致四条边。

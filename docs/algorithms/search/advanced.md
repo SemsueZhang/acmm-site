@@ -52,6 +52,53 @@ A* 用 $f(s)=g(s)+h(s)$ 排序：$g$ 是已付出的真实代价，$h$ 是到目
 
 依次限制最大深度为 $0,1,2,\dots$ 做深度受限 DFS。它兼具 DFS 的低内存和 BFS 的最浅解保证，适合分支较少但答案深度未知的状态空间。虽然浅层被重复搜索，但指数树中最后一层通常占绝大多数节点。
 
+## 真题：P1379 八数码难题
+
+[洛谷 P1379 八数码难题](https://www.luogu.com.cn/problem/P1379) 的一个状态是 9 个格子的排列，转移是把 0 与上下左右格交换。普通 BFS 已能覆盖至多 $9!$ 个排列，并保证第一次到达目标时步数最少。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string start;
+    cin >> start;
+    const string target = "123804765";
+
+    queue<string> states;
+    unordered_map<string, int> distance;
+    states.push(start);
+    distance[start] = 0;
+
+    int dx[4] = {-1, 1, 0, 0};
+    int dy[4] = {0, 0, -1, 1};
+    while (!states.empty()) {
+        string current = states.front();
+        states.pop();
+        if (current == target) {
+            cout << distance[current] << '\n';
+            return 0;
+        }
+
+        int zero = current.find('0');
+        int x = zero / 3, y = zero % 3;
+        for (int direction = 0; direction < 4; ++direction) {
+            int nextX = x + dx[direction], nextY = y + dy[direction];
+            if (nextX < 0 || nextX >= 3 || nextY < 0 || nextY >= 3)
+                continue;
+            string next = current;
+            swap(next[zero], next[nextX * 3 + nextY]);
+            if (distance.count(next)) continue;
+            distance[next] = distance[current] + 1;
+            states.push(next);
+        }
+    }
+    return 0;
+}
+```
+
+这份代码用于建立正确的状态建模。进一步优化时，可从起点与终点做双向 BFS，或用“每个数字到目标位置的曼哈顿距离之和”作为 A* 启发函数；二者都不改变状态与转移定义。
+
 ## 易错点
 
 - 剪枝条件只凭直觉，误剪合法最优解；每条剪枝都要有上下界证明。

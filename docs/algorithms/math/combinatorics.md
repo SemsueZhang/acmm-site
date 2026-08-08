@@ -81,6 +81,56 @@ $$
 
 例：两对括号有 `(())`、`()()` 两种，$C_2=2$。若取模下 $n+1$ 不可逆，应使用递推或其他适合模数的方法，不能直接做除法。
 
+## 真题：P2822 组合数问题
+
+[洛谷 P2822 组合数问题](https://www.luogu.com.cn/problem/P2822) 多次询问满足 $0\le i\le n$、$0\le j\le\min(i,m)$ 且 $\binom ij$ 能被给定 $k$ 整除的数对数量。
+
+这里只关心是否模 $k$ 为 0，无需计算巨大组合数。先用 Pascal 递推预处理组合数模 $k$，再对“是否为 0”的二维表做前缀和。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int testCases, modulus;
+    cin >> testCases >> modulus;
+    const int LIMIT = 2000;
+    vector<vector<int>> combination(LIMIT + 1,
+        vector<int>(LIMIT + 1));
+    vector<vector<int>> prefix(LIMIT + 2,
+        vector<int>(LIMIT + 2));
+
+    combination[0][0] = 1 % modulus;
+    for (int n = 1; n <= LIMIT; ++n) {
+        combination[n][0] = 1 % modulus;
+        for (int m = 1; m <= n; ++m)
+            combination[n][m] = (combination[n - 1][m - 1]
+                               + combination[n - 1][m]) % modulus;
+    }
+
+    for (int n = 0; n <= LIMIT; ++n) {
+        for (int m = 0; m <= LIMIT; ++m) {
+            int divisible = (m <= n && combination[n][m] == 0);
+            prefix[n + 1][m + 1] = prefix[n][m + 1] + prefix[n + 1][m]
+                                 - prefix[n][m] + divisible;
+        }
+    }
+
+    while (testCases--) {
+        int n, m;
+        cin >> n >> m;
+        m = min(m, n);
+        cout << prefix[n + 1][m + 1] << '\n';
+    }
+    return 0;
+}
+```
+
+预处理时间、空间均为 $O(N^2)$，每次询问 $O(1)$。组合数模数不要求是质数，因为递推只有加法，不涉及逆元。
+
 ## 易错点
 
 - 可区分与不可区分对象混淆。

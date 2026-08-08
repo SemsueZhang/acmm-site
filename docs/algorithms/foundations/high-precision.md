@@ -55,6 +55,41 @@ vector<int> multiply(const vector<int>& a, const vector<int>& b) {
 
 按正常书写顺序从高位到低位：当前被除数 `cur = remainder * 10 + digit`，商位为 `cur / b`，新余数为 `cur % b`。复杂度 $O(n)$。
 
+## 真题：P1601 高精度加法
+
+[洛谷 P1601 A+B Problem（高精）](https://www.luogu.com.cn/problem/P1601) 直接要求两个非负大整数之和。识别信号是输入位数超过内置整数范围；此时不能先读入 `long long`，必须以字符串读取。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+string add(string a, string b) {
+    reverse(a.begin(), a.end());
+    reverse(b.begin(), b.end());
+    string result;
+    int carry = 0;
+
+    for (size_t i = 0; i < max(a.size(), b.size()) || carry; ++i) {
+        int sum = carry;
+        if (i < a.size()) sum += a[i] - '0';
+        if (i < b.size()) sum += b[i] - '0';
+        result.push_back(char('0' + sum % 10));
+        carry = sum / 10;
+    }
+    reverse(result.begin(), result.end());
+    return result.empty() ? "0" : result;
+}
+
+int main() {
+    string a, b;
+    cin >> a >> b;
+    cout << add(a, b) << '\n';
+    return 0;
+}
+```
+
+若两数最大长度为 $n$，时间和结果空间都是 $O(n)$。
+
 ## 易错点
 
 - 结果为 0 时把所有数位都删掉。

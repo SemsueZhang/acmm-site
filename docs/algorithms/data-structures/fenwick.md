@@ -55,6 +55,54 @@ bit.add(rank[i], 1);
 
 在差分数组上建树状数组。对 `[l,r]` 加 $x$，执行 `add(l,x)`、`add(r+1,-x)`；位置 $p$ 的增量就是差分前缀和 `prefixSum(p)`。
 
+## 真题：P3374 树状数组 1
+
+[洛谷 P3374【模板】树状数组 1](https://www.luogu.com.cn/problem/P3374) 将操作直接分成“某一点增加”和“询问区间和”。这两种操作分别对应 `add` 和两个前缀和之差。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Fenwick {
+    int n;
+    vector<long long> tree;
+    explicit Fenwick(int n) : n(n), tree(n + 1) {}
+    void add(int position, long long delta) {
+        for (; position <= n; position += position & -position)
+            tree[position] += delta;
+    }
+    long long prefixSum(int position) const {
+        long long result = 0;
+        for (; position > 0; position -= position & -position)
+            result += tree[position];
+        return result;
+    }
+};
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, operations;
+    cin >> n >> operations;
+    Fenwick bit(n);
+    for (int i = 1; i <= n; ++i) {
+        long long value;
+        cin >> value;
+        bit.add(i, value);
+    }
+    while (operations--) {
+        int type, x, y;
+        cin >> type >> x >> y;
+        if (type == 1) bit.add(x, y);
+        else cout << bit.prefixSum(y) - bit.prefixSum(x - 1) << '\n';
+    }
+    return 0;
+}
+```
+
+建树 $O(n\log n)$，每次操作 $O(\log n)$。若追求线性建树，可先计算每个 `tree[i]` 所管理区间的和，但不是本题核心。
+
 ## 易错点
 
 - 下标必须从 1 开始；若 `x=0`，`x += lowbit(x)` 永远不变，造成死循环。

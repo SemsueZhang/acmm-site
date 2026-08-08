@@ -64,6 +64,71 @@ $$
 
 DFS 每次进入节点和从孩子返回时记录节点，得到长度约 $2n-1$ 的欧拉序；两个节点首次出现位置之间深度最小的节点就是 LCA。可用 ST 表做 RMQ。该法预处理 $O(n\log n)$、查询 $O(1)$，但代码更长。
 
+## 真题：P3379 最近公共祖先
+
+[洛谷 P3379【模板】最近公共祖先](https://www.luogu.com.cn/problem/P3379) 给出树根和多次 LCA 查询。预处理时让 `up[0][root]=root`，后续高层祖先都会保持为根，查询中无需访问无意义的 0 号祖先。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, queries, root;
+    cin >> n >> queries >> root;
+    vector<vector<int>> graph(n + 1);
+    for (int i = 1; i < n; ++i) {
+        int u, v;
+        cin >> u >> v;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    int log = 1;
+    while ((1 << log) <= n) ++log;
+    vector<vector<int>> up(log, vector<int>(n + 1));
+    vector<int> depth(n + 1);
+
+    function<void(int,int)> dfs = [&](int u, int parent) {
+        up[0][u] = parent;
+        for (int level = 1; level < log; ++level)
+            up[level][u] = up[level - 1][up[level - 1][u]];
+        for (int v : graph[u]) {
+            if (v == parent) continue;
+            depth[v] = depth[u] + 1;
+            dfs(v, u);
+        }
+    };
+    dfs(root, root);
+
+    auto lca = [&](int u, int v) {
+        if (depth[u] < depth[v]) swap(u, v);
+        int difference = depth[u] - depth[v];
+        for (int level = 0; level < log; ++level)
+            if ((difference >> level) & 1) u = up[level][u];
+        if (u == v) return u;
+        for (int level = log - 1; level >= 0; --level) {
+            if (up[level][u] != up[level][v]) {
+                u = up[level][u];
+                v = up[level][v];
+            }
+        }
+        return up[0][u];
+    };
+
+    while (queries--) {
+        int u, v;
+        cin >> u >> v;
+        cout << lca(u, v) << '\n';
+    }
+    return 0;
+}
+```
+
+预处理 $O(n\log n)$，每次询问 $O(\log n)$，空间 $O(n\log n)$。若树可能是一条很深的链，应把递归 DFS 改为显式栈以避免调用栈溢出。
+
 ## 易错点
 
 - 没有先对齐深度。

@@ -15,9 +15,9 @@ solve(l, r):
 
 若拆成两个 $n/2$ 子问题，合并花 $O(n)$，递推式 $T(n)=2T(n/2)+O(n)$，总复杂度 $O(n\log n)$。
 
-### 例题：逆序对
+### 例题：P1908 逆序对
 
-若 $i<j$ 且 $a_i>a_j$，则 $(i,j)$ 是一个逆序对。归并排序合并两个有序区间时，若右侧当前元素小于左侧当前元素，那么左侧从当前位置到末尾的所有元素都与它构成逆序对。
+[洛谷 P1908 逆序对](https://www.luogu.com.cn/problem/P1908) 中，若 $i<j$ 且 $a_i>a_j$，则 $(i,j)$ 是一个逆序对。直接枚举数对是 $O(n^2)$，无法处理大规模输入。归并排序合并两个有序区间时，若右侧当前元素小于左侧当前元素，那么左侧从当前位置到末尾的所有元素都与它构成逆序对。
 
 ```cpp
 long long mergeCount(vector<int>& a, vector<int>& tmp, int l, int r) {
@@ -41,6 +41,47 @@ long long mergeCount(vector<int>& a, vector<int>& tmp, int l, int r) {
 ```
 
 `2 4 1 3` 的左右两半分别排好后，合并时 `1` 小于 `2`，一次贡献两个逆序对 `(2,1),(4,1)`；`3` 小于 `4`，再贡献一个。答案为 3。
+
+完整程序只需在上述函数外补上输入、临时数组和初始区间：
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+long long mergeCount(vector<int>& a, vector<int>& temp, int left, int right) {
+    if (left >= right) return 0;
+    int middle = left + (right - left) / 2;
+    long long answer = mergeCount(a, temp, left, middle)
+                     + mergeCount(a, temp, middle + 1, right);
+
+    int i = left, j = middle + 1, p = left;
+    while (i <= middle && j <= right) {
+        if (a[i] <= a[j]) temp[p++] = a[i++];
+        else {
+            temp[p++] = a[j++];
+            answer += middle - i + 1;
+        }
+    }
+    while (i <= middle) temp[p++] = a[i++];
+    while (j <= right) temp[p++] = a[j++];
+    for (int k = left; k <= right; ++k) a[k] = temp[k];
+    return answer;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    vector<int> a(n), temp(n);
+    for (int& value : a) cin >> value;
+    cout << mergeCount(a, temp, 0, n - 1) << '\n';
+    return 0;
+}
+```
+
+每一层合并总计 $O(n)$，共有 $O(\log n)$ 层，因此时间 $O(n\log n)$、额外空间 $O(n)$。
 
 ## 扫描线
 

@@ -33,9 +33,9 @@ for (auto [l, r] : seg) {
 
 排序 $O(n\log n)$，扫描 $O(n)$。
 
-## 例题二：合并果子（Huffman 思想）
+## 例题二：P1090 合并果子
 
-每次合并两堆果子，代价是两堆重量之和；新堆可继续合并。求合并成一堆的最小总代价。
+[洛谷 P1090 合并果子](https://www.luogu.com.cn/problem/P1090) 中，每次合并两堆果子，代价是两堆重量之和；新堆可继续合并。要求把所有果子合并成一堆的最小总代价。
 
 每次取最轻的两堆合并。重量越早参与合并，被重复计入的次数越多，因此应让小重量承担更深的层数。用小根堆维护当前最小的两堆：
 
@@ -52,6 +52,39 @@ while (pq.size() > 1) {
 ```
 
 例如 `1,2,9`：先合并 `1+2=3`，总代价 $3+12=15$；若先合并 `2+9=11`，总代价 $11+12=23$。
+
+完整实现如下。答案可能超过 `int`，因此堆元素和总费用都使用 `long long`。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    priority_queue<long long, vector<long long>, greater<long long>> heap;
+    for (int i = 0; i < n; ++i) {
+        long long weight;
+        cin >> weight;
+        heap.push(weight);
+    }
+
+    long long answer = 0;
+    while (heap.size() > 1) {
+        long long first = heap.top(); heap.pop();
+        long long second = heap.top(); heap.pop();
+        answer += first + second;
+        heap.push(first + second);
+    }
+    cout << answer << '\n';
+    return 0;
+}
+```
+
+每次合并执行两次删除和一次插入，共 $n-1$ 轮，时间 $O(n\log n)$、空间 $O(n)$。
 
 ## 什么时候不能贪心
 

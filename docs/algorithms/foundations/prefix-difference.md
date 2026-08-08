@@ -83,6 +83,55 @@ int id = lower_bound(xs.begin(), xs.end(), value) - xs.begin() + 1;
 
 随后可在编号 $1..|xs|$ 上使用树状数组。若题目关心区间长度，例如扫描线覆盖长度，不能简单把坐标看成连续编号，必须使用原坐标差 `xs[i+1]-xs[i]`。
 
+## 真题：P3397 地毯
+
+[洛谷 P3397 地毯](https://www.luogu.com.cn/problem/P3397) 给出 $m$ 个轴对齐矩形，要求输出 $n\times n$ 网格中每个格子被覆盖的次数。逐块地毯修改所有格子需要 $O(mn^2)$，而题目只在全部修改后统一输出，正适合二维差分。
+
+对闭矩形 $[x_1,x_2]\times[y_1,y_2]$ 加 1，在差分数组上修改四个角：
+
+```text
+diff[x1][y1]         += 1
+diff[x2+1][y1]       -= 1
+diff[x1][y2+1]       -= 1
+diff[x2+1][y2+1]     += 1
+```
+
+最后做二维前缀和恢复覆盖次数。四个符号可以从“在左上角开始贡献，越过下边或右边时取消，两次取消的右下区域再补回”理解，而不必死记。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> diff(n + 2, vector<int>(n + 2));
+
+    while (m--) {
+        int x1, y1, x2, y2;
+        cin >> x1 >> y1 >> x2 >> y2;
+        ++diff[x1][y1];
+        --diff[x2 + 1][y1];
+        --diff[x1][y2 + 1];
+        ++diff[x2 + 1][y2 + 1];
+    }
+
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= n; ++j) {
+            diff[i][j] += diff[i - 1][j] + diff[i][j - 1]
+                        - diff[i - 1][j - 1];
+            cout << diff[i][j] << " \n"[j == n];
+        }
+    }
+    return 0;
+}
+```
+
+每块地毯只修改四处，恢复网格为 $O(n^2)$，总时间 $O(m+n^2)$、空间 $O(n^2)$。
+
 ## 常见错误
 
 - 混用 0 下标和 1 下标，错写成 `pre[r]-pre[l]`。

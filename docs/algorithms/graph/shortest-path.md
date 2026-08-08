@@ -88,6 +88,57 @@ graph LR
 
 同时为每个点维护最短 `d1` 与严格次短 `d2`。新距离 `nd` 小于 `d1[v]` 时，旧最短顺延为次短；若 `d1[v] < nd < d2[v]`，更新次短。是否允许与最短等长、是否允许重复点/边必须以题意为准。
 
+## 真题：P4779 单源最短路径
+
+[洛谷 P4779【模板】单源最短路径（标准版）](https://www.luogu.com.cn/problem/P4779) 的边权均为非负数，图又较稀疏，因此使用邻接表加堆优化 Dijkstra。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Edge { int to, weight; };
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m, source;
+    cin >> n >> m >> source;
+    vector<vector<Edge>> graph(n + 1);
+    while (m--) {
+        int from, to, weight;
+        cin >> from >> to >> weight;
+        graph[from].push_back({to, weight});
+    }
+
+    const long long INF = (1LL << 62);
+    vector<long long> distance(n + 1, INF);
+    priority_queue<pair<long long,int>,
+                   vector<pair<long long,int>>,
+                   greater<pair<long long,int>>> heap;
+    distance[source] = 0;
+    heap.push({0, source});
+
+    while (!heap.empty()) {
+        auto [currentDistance, u] = heap.top();
+        heap.pop();
+        if (currentDistance != distance[u]) continue;
+        for (Edge edge : graph[u]) {
+            if (distance[edge.to] > currentDistance + edge.weight) {
+                distance[edge.to] = currentDistance + edge.weight;
+                heap.push({distance[edge.to], edge.to});
+            }
+        }
+    }
+
+    for (int vertex = 1; vertex <= n; ++vertex)
+        cout << distance[vertex] << " \n"[vertex == n];
+    return 0;
+}
+```
+
+每次有效松弛插入一个堆状态；旧状态弹出时用距离判断并跳过。复杂度 $O((n+m)\log n)$，空间 $O(n+m)$。
+
 ## 易错点
 
 - `INF + w` 溢出，松弛前先判断可达。

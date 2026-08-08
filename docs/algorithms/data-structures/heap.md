@@ -42,6 +42,41 @@ priority_queue<int> maxHeap; // 大根堆
 priority_queue<int, vector<int>, greater<int>> minHeap; // 小根堆
 ```
 
+## 真题：P3378 堆
+
+[洛谷 P3378【模板】堆](https://www.luogu.com.cn/problem/P3378) 支持插入、查询最小值和删除最小值，恰好对应小根堆的三个基本操作。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int operations;
+    cin >> operations;
+    priority_queue<int, vector<int>, greater<int>> heap;
+
+    while (operations--) {
+        int type;
+        cin >> type;
+        if (type == 1) {
+            int value;
+            cin >> value;
+            heap.push(value);
+        } else if (type == 2) {
+            cout << heap.top() << '\n';
+        } else {
+            heap.pop();
+        }
+    }
+    return 0;
+}
+```
+
+查询堆顶 $O(1)$，插入和删除 $O(\log n)$，空间 $O(n)$。题目保证查询和删除时堆非空；通用程序仍应自行检查这一前提。
+
 ## 易错点
 
 - 把堆当作有序数组，试图快速查找或删除任意值。

@@ -68,6 +68,53 @@ while (!q.empty()) {
 
 显式图遍历为 $O(n+m)$。隐式状态搜索应写成“状态数 × 每状态转移数”，不能只看代码循环。若状态是一个长度 $n$ 的排列，状态数可能达到 $n!$。
 
+## 真题：P1443 马的遍历
+
+[洛谷 P1443 马的遍历](https://www.luogu.com.cn/problem/P1443) 要求棋盘上一个马到每个格子的最少步数。每次移动代价都是 1，因此第一次 BFS 到达某格时，距离已经最短。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int rows, columns, startX, startY;
+    cin >> rows >> columns >> startX >> startY;
+    --startX; --startY;
+
+    vector<vector<int>> distance(rows, vector<int>(columns, -1));
+    queue<pair<int,int>> states;
+    distance[startX][startY] = 0;
+    states.push({startX, startY});
+
+    int dx[8] = {-2,-2,-1,-1,1,1,2,2};
+    int dy[8] = {-1,1,-2,2,-2,2,-1,1};
+    while (!states.empty()) {
+        auto [x, y] = states.front();
+        states.pop();
+        for (int direction = 0; direction < 8; ++direction) {
+            int nextX = x + dx[direction];
+            int nextY = y + dy[direction];
+            if (nextX < 0 || nextX >= rows ||
+                nextY < 0 || nextY >= columns) continue;
+            if (distance[nextX][nextY] != -1) continue;
+            distance[nextX][nextY] = distance[x][y] + 1;
+            states.push({nextX, nextY});
+        }
+    }
+
+    for (const auto& row : distance) {
+        for (int value : row) cout << left << setw(5) << value;
+        cout << '\n';
+    }
+    return 0;
+}
+```
+
+棋盘共有 $nm$ 个状态，每个状态尝试 8 次转移，时间和空间都是 $O(nm)$。
+
 ## 易错点
 
 - DFS 修改全局状态后忘记撤销。

@@ -89,6 +89,49 @@ $$x\equiv2\cdot5\cdot2+3\cdot3\cdot2=38\equiv8\pmod{15}.$$
 
 模数不互质时需用扩展 CRT 合并两条同余，并检查余数差能否被 gcd 整除。
 
+## 真题：P1082 同余方程
+
+[洛谷 P1082 同余方程](https://www.luogu.com.cn/problem/P1082) 要求最小正整数 $x$ 满足 $ax\equiv1\pmod b$。把同余改写为：
+
+$$
+ax+by=1.
+$$
+
+扩展欧几里得求出一组系数后，把 $x$ 规范到 $[0,b-1]$。题目保证逆元存在；通用实现还应检查 gcd 是否为 1。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+long long extendedGcd(long long a, long long b, long long& x, long long& y) {
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    long long nextX, nextY;
+    long long gcd = extendedGcd(b, a % b, nextX, nextY);
+    x = nextY;
+    y = nextX - (a / b) * nextY;
+    return gcd;
+}
+
+int main() {
+    long long a, modulus, x, y;
+    cin >> a >> modulus;
+    long long gcd = extendedGcd(a, modulus, x, y);
+    if (gcd != 1) {
+        cout << "No inverse\n";
+        return 0;
+    }
+    x = (x % modulus + modulus) % modulus;
+    cout << x << '\n';
+    return 0;
+}
+```
+
+欧几里得算法每次把参数替换为余数，时间 $O(\log\min(a,b))$，递归空间同阶。
+
 ## 易错点
 
 - 负数 `%` 后仍为负。

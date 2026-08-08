@@ -55,6 +55,55 @@ $$
 !!! warning "不要套公式"
     斜率优化的前提包括转移式能线性化、候选集合正确、单调性成立。页面只给出识别框架；实题必须从原式逐项推导截距、横坐标和查询斜率。
 
+## 真题：P1725 琪露诺
+
+[洛谷 P1725 琪露诺](https://www.luogu.com.cn/problem/P1725) 中，到达位置 $i$ 的上一步必须来自 $[i-R,i-L]$，转移为窗口最大值：
+
+$$
+dp_i=a_i+\max_{i-R\le j\le i-L}dp_j.
+$$
+
+随着 $i$ 增加，候选右端点 `i-L` 依次加入，左端点 `i-R` 依次过期，正适合单调队列。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, minimumJump, maximumJump;
+    cin >> n >> minimumJump >> maximumJump;
+    vector<long long> score(n + 1), dp(n + 1, LLONG_MIN / 4);
+    for (int i = 0; i <= n; ++i) cin >> score[i];
+
+    deque<int> candidates;
+    dp[0] = 0;
+    long long answer = LLONG_MIN;
+
+    for (int position = 1; position <= n; ++position) {
+        int entering = position - minimumJump;
+        if (entering >= 0 && dp[entering] > LLONG_MIN / 8) {
+            while (!candidates.empty() &&
+                   dp[candidates.back()] <= dp[entering])
+                candidates.pop_back();
+            candidates.push_back(entering);
+        }
+        while (!candidates.empty() &&
+               candidates.front() < position - maximumJump)
+            candidates.pop_front();
+        if (!candidates.empty())
+            dp[position] = score[position] + dp[candidates.front()];
+        if (position + maximumJump > n) answer = max(answer, dp[position]);
+    }
+    cout << answer << '\n';
+    return 0;
+}
+```
+
+每个位置进入、离开队列至多一次，时间 $O(n)$、空间 $O(n)$。实现时要按题意确认终点判定范围，以及不可达状态不能进入候选队列。
+
 ## 优化检查表
 
 1. 朴素 DP 是否已证明正确？

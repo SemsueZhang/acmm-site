@@ -49,6 +49,44 @@ struct SparseTable {
 
 预处理时间和空间都是 $O(n\log n)$，查询 $O(1)$。
 
+## 真题：P3865 ST 表
+
+[洛谷 P3865【模板】ST 表](https://www.luogu.com.cn/problem/P3865) 的数组不会修改，需要多次查询闭区间最大值，正好满足“静态、幂等运算”两个识别条件。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, queries;
+    cin >> n >> queries;
+    vector<int> logarithm(n + 1);
+    for (int i = 2; i <= n; ++i) logarithm[i] = logarithm[i / 2] + 1;
+
+    int levels = logarithm[n] + 1;
+    vector<vector<int>> st(levels, vector<int>(n + 1));
+    for (int i = 1; i <= n; ++i) cin >> st[0][i];
+    for (int level = 1; level < levels; ++level)
+        for (int left = 1; left + (1 << level) - 1 <= n; ++left)
+            st[level][left] = max(st[level - 1][left],
+                st[level - 1][left + (1 << (level - 1))]);
+
+    while (queries--) {
+        int left, right;
+        cin >> left >> right;
+        int level = logarithm[right - left + 1];
+        cout << max(st[level][left],
+                    st[level][right - (1 << level) + 1]) << '\n';
+    }
+    return 0;
+}
+```
+
+预处理 $O(n\log n)$，每次查询 $O(1)$，空间 $O(n\log n)$。
+
 ## 易错点
 
 - 建表时没有保证 `i + (1<<k) <= n`，导致越界。

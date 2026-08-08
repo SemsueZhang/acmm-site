@@ -43,6 +43,61 @@ cout << dp[1][n] << '\n';
 
 首尾相邻时常把数组复制一遍，长度变成 $2n$，只计算长度不超过 $n$ 的区间，最后对所有起点的长度 $n$ 区间取答案。
 
+## 真题：P1880 石子合并
+
+[洛谷 P1880 石子合并](https://www.luogu.com.cn/problem/P1880) 是环形版本，并同时要求最小与最大代价。把数组复制一遍后，对长度不超过 $n$ 的区间做相同转移，最后枚举断环位置。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    vector<int> stones(2 * n + 1), prefix(2 * n + 1);
+    for (int i = 1; i <= n; ++i) {
+        cin >> stones[i];
+        stones[i + n] = stones[i];
+    }
+    for (int i = 1; i <= 2 * n; ++i)
+        prefix[i] = prefix[i - 1] + stones[i];
+
+    const int INF = 0x3f3f3f3f;
+    vector<vector<int>> minimum(2 * n + 1, vector<int>(2 * n + 1));
+    vector<vector<int>> maximum(2 * n + 1, vector<int>(2 * n + 1));
+
+    for (int length = 2; length <= n; ++length) {
+        for (int left = 1; left + length - 1 <= 2 * n; ++left) {
+            int right = left + length - 1;
+            minimum[left][right] = INF;
+            int intervalSum = prefix[right] - prefix[left - 1];
+            for (int split = left; split < right; ++split) {
+                minimum[left][right] = min(minimum[left][right],
+                    minimum[left][split] + minimum[split + 1][right]
+                    + intervalSum);
+                maximum[left][right] = max(maximum[left][right],
+                    maximum[left][split] + maximum[split + 1][right]
+                    + intervalSum);
+            }
+        }
+    }
+
+    int answerMinimum = INF, answerMaximum = 0;
+    for (int left = 1; left <= n; ++left) {
+        int right = left + n - 1;
+        answerMinimum = min(answerMinimum, minimum[left][right]);
+        answerMaximum = max(answerMaximum, maximum[left][right]);
+    }
+    cout << answerMinimum << '\n' << answerMaximum << '\n';
+    return 0;
+}
+```
+
+状态 $O(n^2)$、每个状态枚举分界 $O(n)$，总时间 $O(n^3)$、空间 $O(n^2)$。
+
 ## 易错点
 
 - 外层按左端点递增，导致子区间尚未计算。

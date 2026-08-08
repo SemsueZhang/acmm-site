@@ -65,6 +65,47 @@ cout << tail.size() << '\n';
 
 记忆化搜索只计算从答案可达的状态，写法接近题意；自底向上递推没有递归开销，顺序更清晰。二者状态与转移本质相同。
 
+## 真题：P1020 导弹拦截
+
+[洛谷 P1020 导弹拦截](https://www.luogu.com.cn/problem/P1020) 第一问是最长不上升子序列；第二问根据 Dilworth 定理，最少的不上升序列划分数等于最长严格上升子序列长度。
+
+可以把第一问的每个高度取相反数，把“最长不上升”转成“最长不下降”，使用 `upper_bound`；第二问直接使用严格 LIS 的 `lower_bound`。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> heights;
+    int height;
+    while (cin >> height) heights.push_back(height);
+
+    vector<int> nonDecreasingNegated;
+    for (int value : heights) {
+        int transformed = -value;
+        auto position = upper_bound(nonDecreasingNegated.begin(),
+                                    nonDecreasingNegated.end(), transformed);
+        if (position == nonDecreasingNegated.end())
+            nonDecreasingNegated.push_back(transformed);
+        else
+            *position = transformed;
+    }
+
+    vector<int> increasing;
+    for (int value : heights) {
+        auto position = lower_bound(increasing.begin(), increasing.end(), value);
+        if (position == increasing.end()) increasing.push_back(value);
+        else *position = value;
+    }
+
+    cout << nonDecreasingNegated.size() << '\n';
+    cout << increasing.size() << '\n';
+    return 0;
+}
+```
+
+两次扫描各为 $O(n\log n)$，空间 $O(n)$。严格与非严格的差别最终落实在 `lower_bound` 和 `upper_bound`，必须从状态定义判断，不能凭记忆互换。
+
 ## 易错点
 
 - 状态含义不完整，例如只记录位置却漏掉剩余资源。

@@ -102,6 +102,107 @@ flowchart LR
 
 例如“区间赋值 + 区间增加”同时存在时，赋值会覆盖旧赋值和旧增加；下传顺序写错会得到错误答案。
 
+## 真题：P3372 线段树 1
+
+[洛谷 P3372【模板】线段树 1](https://www.luogu.com.cn/problem/P3372) 同时要求区间加和区间求和。节点和、区间长度以及懒标记的作用正好对应前文四个设计问题。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+class SegmentTree {
+    int n;
+    vector<long long> sum, lazy;
+
+    void build(int node, int left, int right, const vector<long long>& a) {
+        if (left == right) { sum[node] = a[left]; return; }
+        int middle = (left + right) / 2;
+        build(node * 2, left, middle, a);
+        build(node * 2 + 1, middle + 1, right, a);
+        sum[node] = sum[node * 2] + sum[node * 2 + 1];
+    }
+    void apply(int node, int left, int right, long long delta) {
+        sum[node] += delta * (right - left + 1);
+        lazy[node] += delta;
+    }
+    void push(int node, int left, int right) {
+        if (lazy[node] == 0 || left == right) return;
+        int middle = (left + right) / 2;
+        apply(node * 2, left, middle, lazy[node]);
+        apply(node * 2 + 1, middle + 1, right, lazy[node]);
+        lazy[node] = 0;
+    }
+    void rangeAdd(int node, int left, int right,
+                  int queryLeft, int queryRight, long long delta) {
+        if (queryLeft <= left && right <= queryRight) {
+            apply(node, left, right, delta);
+            return;
+        }
+        push(node, left, right);
+        int middle = (left + right) / 2;
+        if (queryLeft <= middle)
+            rangeAdd(node * 2, left, middle, queryLeft, queryRight, delta);
+        if (queryRight > middle)
+            rangeAdd(node * 2 + 1, middle + 1, right,
+                     queryLeft, queryRight, delta);
+        sum[node] = sum[node * 2] + sum[node * 2 + 1];
+    }
+    long long rangeSum(int node, int left, int right,
+                       int queryLeft, int queryRight) {
+        if (queryLeft <= left && right <= queryRight) return sum[node];
+        push(node, left, right);
+        int middle = (left + right) / 2;
+        long long answer = 0;
+        if (queryLeft <= middle)
+            answer += rangeSum(node * 2, left, middle, queryLeft, queryRight);
+        if (queryRight > middle)
+            answer += rangeSum(node * 2 + 1, middle + 1, right,
+                               queryLeft, queryRight);
+        return answer;
+    }
+
+public:
+    explicit SegmentTree(const vector<long long>& a) {
+        n = (int)a.size() - 1;
+        sum.assign(4 * n + 4, 0);
+        lazy.assign(4 * n + 4, 0);
+        build(1, 1, n, a);
+    }
+    void add(int left, int right, long long delta) {
+        rangeAdd(1, 1, n, left, right, delta);
+    }
+    long long query(int left, int right) {
+        return rangeSum(1, 1, n, left, right);
+    }
+};
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, operations;
+    cin >> n >> operations;
+    vector<long long> a(n + 1);
+    for (int i = 1; i <= n; ++i) cin >> a[i];
+    SegmentTree segmentTree(a);
+
+    while (operations--) {
+        int type, left, right;
+        cin >> type >> left >> right;
+        if (type == 1) {
+            long long delta;
+            cin >> delta;
+            segmentTree.add(left, right, delta);
+        } else {
+            cout << segmentTree.query(left, right) << '\n';
+        }
+    }
+    return 0;
+}
+```
+
+建树 $O(n)$，每次操作 $O(\log n)$，空间 $O(n)$。题目允许区间和很大，节点和与懒标记都必须使用 `long long`。
+
 ## 易错点
 
 - 完整覆盖与部分覆盖条件写反。

@@ -66,7 +66,10 @@ nav:
       - ST 表: algorithms/data-structures/sparse-table.md
       - 线段树: algorithms/data-structures/segment-tree.md
       - 树状数组: algorithms/data-structures/fenwick.md
-      - 笛卡尔树与平衡树: algorithms/data-structures/advanced-trees.md
+      - 进阶树结构:
+        - algorithms/data-structures/advanced-trees.md
+        - 笛卡尔树: algorithms/data-structures/cartesian-tree.md
+        - FHQ Treap: algorithms/data-structures/fhq-treap.md
     - 树:
       - algorithms/tree/index.md
       - 树基础: algorithms/tree.md

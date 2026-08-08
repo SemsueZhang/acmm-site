@@ -68,6 +68,51 @@ void dfs(int u, int p) {
 
 若要求“以每个点为根”的答案，可先从固定根求子树信息，再在第二次 DFS 中把父亲侧贡献传给孩子。总答案被拆成孩子侧与父亲侧，换根时只改变跨过一条边的归属。
 
+## 真题：P1352 没有上司的舞会
+
+[洛谷 P1352 没有上司的舞会](https://www.luogu.com.cn/problem/P1352) 的上下级关系形成一棵有根树，相邻的上司与直接下属不能同时参加，正是最大权独立集模型。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    vector<long long> happiness(n + 1);
+    for (int i = 1; i <= n; ++i) cin >> happiness[i];
+
+    vector<vector<int>> children(n + 1);
+    vector<int> hasParent(n + 1);
+    for (int i = 1; i < n; ++i) {
+        int employee, boss;
+        cin >> employee >> boss;
+        children[boss].push_back(employee);
+        hasParent[employee] = true;
+    }
+    int root = 1;
+    while (hasParent[root]) ++root;
+
+    vector<array<long long,2>> dp(n + 1);
+    function<void(int)> dfs = [&](int u) {
+        dp[u][1] = happiness[u];
+        for (int v : children[u]) {
+            dfs(v);
+            dp[u][0] += max(dp[v][0], dp[v][1]);
+            dp[u][1] += dp[v][0];
+        }
+    };
+    dfs(root);
+    cout << max(dp[root][0], dp[root][1]) << '\n';
+    return 0;
+}
+```
+
+每个节点和上下级关系只处理一次，时间、空间均为 $O(n)$。
+
 ## 易错点
 
 - 多维状态少了一维关键历史信息，转移看似能写但不正确。

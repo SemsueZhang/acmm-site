@@ -98,6 +98,31 @@ else for (const string& x : s) cout << x;
 
 例如 `3,30,34`：`34+3 > 3+34`，且 `3+30 > 30+3`，答案 `34330`。比较器必须满足严格弱序；不能写 `>=`。
 
+## 真题：P1177 排序
+
+[洛谷 P1177【模板】排序](https://www.luogu.com.cn/problem/P1177) 要求把 $n$ 个整数升序输出。数据规模要求选择 $O(n\log n)$ 量级算法；竞赛实战应优先使用经过充分测试的 `std::sort`，手写排序主要用于理解原理或解决带额外统计信息的问题。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    vector<int> values(n);
+    for (int& value : values) cin >> value;
+    sort(values.begin(), values.end());
+    for (int i = 0; i < n; ++i)
+        cout << values[i] << " \n"[i + 1 == n];
+    return 0;
+}
+```
+
+时间 $O(n\log n)$，`std::sort` 的额外空间主要来自递归栈，通常为 $O(\log n)$。
+
 ## 常见错误
 
 - 认为 `std::sort` 稳定；需要稳定性时使用 `stable_sort`。
