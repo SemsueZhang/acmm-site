@@ -50,9 +50,12 @@ nav:
     - 基础算法与策略:
       - algorithms/foundations/index.md
       - 复杂度、枚举与模拟: algorithms/foundations/complexity-enumeration.md
-      - 前缀和、差分与离散化: algorithms/foundations/prefix-difference.md
+      - 前缀和: algorithms/foundations/prefix-sum.md
+      - 差分: algorithms/foundations/difference.md
+      - 离散化: algorithms/foundations/discretization.md
       - 贪心: algorithms/foundations/greedy.md
-      - 分治与扫描线: algorithms/foundations/divide-conquer-sweep.md
+      - 分治: algorithms/foundations/divide-conquer.md
+      - 扫描线: algorithms/foundations/sweep-line.md
       - 高精度: algorithms/foundations/high-precision.md
       - 排序算法: algorithms/sorting.md
     - 数据结构:
@@ -75,15 +78,20 @@ nav:
       - 树基础: algorithms/tree.md
       - 二叉搜索树: algorithms/tree/bst.md
       - 最近公共祖先: algorithms/tree/lca.md
-      - 树上综合算法: algorithms/tree/techniques.md
+      - 树上算法学习路线: algorithms/tree/techniques.md
+      - 树的直径: algorithms/tree/diameter.md
+      - 树的重心: algorithms/tree/centroid.md
+      - DFS 序与树上差分: algorithms/tree/tree-difference.md
     - 图:
       - algorithms/graph/index.md
       - 图基础: algorithms/graph.md
       - 最短路: algorithms/graph/shortest-path.md
       - 最小生成树: algorithms/graph/mst.md
       - 拓扑排序: algorithms/graph/toposort.md
-      - 欧拉路与二分图: algorithms/graph/euler-bipartite.md
-      - 强连通分量与割点割边: algorithms/graph/connectivity.md
+      - 欧拉道路: algorithms/graph/euler-trail.md
+      - 二分图判定: algorithms/graph/bipartite.md
+      - 强连通分量: algorithms/graph/scc.md
+      - 割点与桥: algorithms/graph/cut-vertices-bridges.md
     - 字符串:
       - algorithms/strings/index.md
       - 字符串基础: algorithms/strings/basics.md
@@ -97,6 +105,10 @@ nav:
     - 数学:
       - algorithms/math/index.md
       - 数论基础: algorithms/math/number-theory.md
+      - 最大公约数与裴蜀定理: algorithms/math/gcd-bezout.md
+      - 质数、分解与线性筛: algorithms/math/prime-sieve.md
+      - 同余与乘法逆元: algorithms/math/modular-inverse.md
+      - 中国剩余定理: algorithms/math/crt.md
       - 组合数学: algorithms/math/combinatorics.md
       - 快速幂: algorithms/math/fast-power.md
       - 矩阵与高斯消元: algorithms/math/linear-algebra.md
@@ -105,7 +117,8 @@ nav:
       - DP 基础: algorithms/dp/basics.md
       - 01 背包: algorithms/dp/knapsack.md
       - 区间 DP: algorithms/dp/interval.md
-      - 多维与树形 DP: algorithms/dp/tree-multidimensional.md
+      - 多维 DP: algorithms/dp/multidimensional.md
+      - 树形 DP: algorithms/dp/tree-dp.md
       - 状态压缩 DP: algorithms/dp/bitmask.md
       - DP 常用优化: algorithms/dp/optimization.md
     - 搜索:

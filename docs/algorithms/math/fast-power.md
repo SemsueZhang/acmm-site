@@ -4,6 +4,8 @@
 
 若 $b$ 为偶数，$a^b=(a^2)^{b/2}$；若为奇数，再额外乘一个 $a$。迭代时 `base` 表示当前二进制位对应的 $a^{2^k}$，`result` 累积指数位为 1 的部分。
 
+循环不变量是 `result * base^b` 与原始的 $a^b$ 同余：指数为奇数时先把一个 `base` 乘入 `result`，指数减去 1；随后把 `base` 平方并把指数除以 2，乘积代表的幂没有改变。当指数变为 0，`base^0=1`，所以 `result` 就是答案。这给出了算法的正确性证明。
+
 ```cpp
 long long modPow(long long a, long long b, long long mod) {
     a %= mod;

@@ -45,7 +45,7 @@ for (int i = 1; i < n; ++i) {
 
 ## 归并排序：先排两半，再线性合并
 
-将数组一分为二，递归排序，然后用双指针合并。每层合并总工作量 $O(n)$，共 $O(\log n)$ 层，因此总时间 $O(n\log n)$。归并过程还能统计逆序对，详见[分治](foundations/divide-conquer-sweep.md)。
+将数组一分为二，递归排序，然后用双指针合并。每层合并总工作量 $O(n)$，共 $O(\log n)$ 层，因此总时间 $O(n\log n)$。归并过程还能统计逆序对，详见[分治](foundations/divide-conquer.md)。
 
 ## 快速排序：按基准分区
 
