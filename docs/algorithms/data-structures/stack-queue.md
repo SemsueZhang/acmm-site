@@ -66,6 +66,46 @@ while (!dq.empty()) {
 
 实现中同一顶点可能被重复放入，但每次有效松弛都会改善距离；也可在队列中附带当时距离，弹出时忽略过期状态。
 
+## 真题：P1449 后缀表达式
+
+[洛谷 P1449 后缀表达式](https://www.luogu.com.cn/problem/P1449) 给出逆波兰表达式。数字出现时入栈；运算符出现时弹出右操作数 `right`，再弹出左操作数 `left`，计算 `left op right` 后把结果压回。
+
+减法和除法不能交换两个操作数，这是本题最常见的错误。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    stack<long long> values;
+    long long number = 0;
+    bool readingNumber = false;
+    char ch;
+
+    while (cin >> ch && ch != '@') {
+        if (isdigit((unsigned char)ch)) {
+            number = number * 10 + (ch - '0');
+            readingNumber = true;
+        } else if (ch == '.') {
+            values.push(number);
+            number = 0;
+            readingNumber = false;
+        } else {
+            long long right = values.top(); values.pop();
+            long long left = values.top(); values.pop();
+            if (ch == '+') values.push(left + right);
+            if (ch == '-') values.push(left - right);
+            if (ch == '*') values.push(left * right);
+            if (ch == '/') values.push(left / right);
+        }
+    }
+    cout << values.top() << '\n';
+    return 0;
+}
+```
+
+每个数字和运算符各进出栈常数次，时间 $O(n)$、空间 $O(n)$。
+
 ## 常见错误
 
 - 调用 `top/front/back` 前没有判断为空。

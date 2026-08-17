@@ -33,9 +33,15 @@ Node* insert(Node* root, int x) {
 
 ## 复杂度与退化
 
-操作时间是 $O(h)$，$h$ 为树高。随机形态平均约 $O(\log n)$；若依次插入 `1,2,3,4,5`，树退化成右链，操作变为 $O(n)$。AVL、Treap、Splay 等平衡树通过维持高度解决退化，见[笛卡尔树与平衡树](../data-structures/advanced-trees.md)。
+操作时间是 $O(h)$，$h$ 为树高。随机形态平均约 $O(\log n)$；若依次插入 `1,2,3,4,5`，树退化成右链，操作变为 $O(n)$。AVL、Treap、Splay 等平衡树通过维持高度解决退化，见[进阶树结构](../data-structures/advanced-trees.md)。
 
 若节点维护 `subtreeSize = leftSize + rightSize + count`，就能按左子树大小求第 $k$ 小与元素排名；每次结构改变后必须更新这一信息。
+
+## 真题延伸：P3369 普通平衡树
+
+[洛谷 P3369【模板】普通平衡树](https://www.luogu.com.cn/problem/P3369) 同时要求插入、删除、排名、第 $k$ 小、前驱和后继。普通 BST 能表达这些操作，却无法保证有序输入下的效率；这正是需要 [FHQ Treap](../data-structures/fhq-treap.md) 等平衡结构的原因。
+
+学习本页后可以先为 BST 补上 `subtreeSize` 写出功能正确的版本，再用单调递增输入观察树高退化，最后对照 FHQ Treap 的分裂、合并如何把期望复杂度恢复到 $O(\log n)$。
 
 ## 实战建议与易错点
 

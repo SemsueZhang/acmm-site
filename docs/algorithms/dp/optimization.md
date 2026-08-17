@@ -2,6 +2,8 @@
 
 优化 DP 前先写出正确的朴素转移，并找出瓶颈是状态数还是转移枚举。这里介绍提高组常见的滚动数组、前缀最值、单调队列和斜率优化的识别方法。
 
+优化必须保持原状态定义与候选集合不变，只改变“怎样更快取得这些候选的和或最值”。若优化后丢失候选、加入非法候选或改变同层／上层依赖，即使复杂度更低也不是同一个 DP。本页以前缀统计和单调队列为主；斜率优化只讲识别条件，不提供可直接套用的万能模板。
+
 ## 滚动数组
 
 若第 $i$ 层只依赖第 $i-1$ 层，可只保留两层；若能原地更新，再压成一层。压缩后必须重新判断循环方向，0/1 背包就是典型例子。
@@ -19,6 +21,8 @@ dp_i=c_i+\max_{i-k\le j<i}f(j),
 $$
 
 候选 $j$ 构成滑动窗口，可用单调队列维护 $f(j)$ 最大值，把 $O(nk)$ 降到 $O(n)$。
+
+正确性来自候选支配：若 $j_1<j_2$ 且 $f(j_1)\le f(j_2)$，那么在二者都未过期时 $j_1$ 不可能优于 $j_2$，而且 $j_1$ 更早过期，因此可以永久删除。队首始终是仍在窗口内的最大候选，所取最大值与朴素枚举完全相同。
 
 ### 例题：限长跳跃最大得分
 
@@ -54,6 +58,57 @@ $$
 
 !!! warning "不要套公式"
     斜率优化的前提包括转移式能线性化、候选集合正确、单调性成立。页面只给出识别框架；实题必须从原式逐项推导截距、横坐标和查询斜率。
+
+## 真题：P1725 琪露诺
+
+[洛谷 P1725 琪露诺](https://www.luogu.com.cn/problem/P1725) 中，到达位置 $i$ 的上一步必须来自 $[i-R,i-L]$，转移为窗口最大值：
+
+$$
+dp_i=a_i+\max_{i-R\le j\le i-L}dp_j.
+$$
+
+随着 $i$ 增加，候选右端点 `i-L` 依次加入，左端点 `i-R` 依次过期，正适合单调队列。
+
+从题面到队列的三个检查缺一不可：前驱是连续区间；左右端点随当前位置单调右移；转移中与前驱有关的部分可以单独比较。若某个前驱的附加系数还随 $i$ 变化，就不能直接按 `dp[j]` 大小维护队列。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, minimumJump, maximumJump;
+    cin >> n >> minimumJump >> maximumJump;
+    vector<long long> score(n + 1), dp(n + 1, LLONG_MIN / 4);
+    for (int i = 0; i <= n; ++i) cin >> score[i];
+
+    deque<int> candidates;
+    dp[0] = 0;
+    long long answer = LLONG_MIN;
+
+    for (int position = 1; position <= n; ++position) {
+        int entering = position - minimumJump;
+        if (entering >= 0 && dp[entering] > LLONG_MIN / 8) {
+            while (!candidates.empty() &&
+                   dp[candidates.back()] <= dp[entering])
+                candidates.pop_back();
+            candidates.push_back(entering);
+        }
+        while (!candidates.empty() &&
+               candidates.front() < position - maximumJump)
+            candidates.pop_front();
+        if (!candidates.empty())
+            dp[position] = score[position] + dp[candidates.front()];
+        if (position + maximumJump > n) answer = max(answer, dp[position]);
+    }
+    cout << answer << '\n';
+    return 0;
+}
+```
+
+每个位置进入、离开队列至多一次，时间 $O(n)$、空间 $O(n)$。实现时要按题意确认终点判定范围，以及不可达状态不能进入候选队列。
 
 ## 优化检查表
 

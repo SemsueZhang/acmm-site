@@ -3,7 +3,11 @@
 提高组数学重点不是背定理名称，而是知道定理的条件、怎样转成代码，以及取模和溢出的边界。
 
 - [快速幂](fast-power.md)：模幂与矩阵快速幂的基础。
-- [初等数论](number-theory.md)：gcd、筛法、同余、欧拉函数、逆元、扩展欧几里得与 CRT。
+- [初等数论学习路线](number-theory.md)：按依赖顺序组织下列独立主题。
+- [最大公约数与裴蜀定理](gcd-bezout.md)
+- [质数、分解与线性筛](prime-sieve.md)
+- [同余与乘法逆元](modular-inverse.md)
+- [中国剩余定理](crt.md)
 - [组合数学](combinatorics.md)：排列组合、鸽巢、二项式、容斥、错排与 Catalan 数。
 - [矩阵与高斯消元](linear-algebra.md)：矩阵运算、快速幂与线性方程组。
 

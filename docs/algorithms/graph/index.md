@@ -6,8 +6,8 @@
 
 1. [图的概念、存储与遍历](../graph.md)
 2. [最短路](shortest-path.md)、[最小生成树](mst.md)、[拓扑排序](toposort.md)
-3. [欧拉路与二分图](euler-bipartite.md)
-4. [强连通分量、割点与割边](connectivity.md)
+3. [欧拉道路](euler-trail.md)、[二分图判定](bipartite.md)
+4. [强连通分量](scc.md)、[割点与桥](cut-vertices-bridges.md)
 5. [树基础](../tree.md)、[LCA](../tree/lca.md)、[树上综合算法](../tree/techniques.md)
 
 | 问题 | 典型算法 |

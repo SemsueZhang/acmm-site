@@ -74,6 +74,52 @@ else { x += dx[dir] * k; y += dy[dir] * k; }
 
 例如要沿父指针向上走 $13=8+4+1$ 步，只需依次使用 $2^3,2^2,2^0$ 的跳跃信息，而不是走 13 次。
 
+## 真题：P1042 乒乓球
+
+[洛谷 P1042 乒乓球](https://www.luogu.com.cn/problem/P1042) 要把同一串逐球胜负记录分别按 11 分制和 21 分制结算。这道题不要求复杂算法，真正考查的是能否把规则写成无歧义的状态机。
+
+一局状态只需要双方当前得分 `win`、`lose`。每读到一个字符先更新比分，再检查：
+
+$$
+\max(win,lose)\ge limit\quad\text{且}\quad |win-lose|\ge2.
+$$
+
+条件成立才结束本局并清零。输入结束后，即使当前比分是 `0:0`，也必须输出正在进行的一局。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void printGames(const string& record, int limit) {
+    int win = 0, lose = 0;
+    for (char result : record) {
+        if (result == 'W') ++win;
+        else ++lose;
+        if (max(win, lose) >= limit && abs(win - lose) >= 2) {
+            cout << win << ':' << lose << '\n';
+            win = lose = 0;
+        }
+    }
+    cout << win << ':' << lose << '\n';
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    string record;
+    char ch;
+    while (cin >> ch && ch != 'E') record.push_back(ch);
+
+    printGames(record, 11);
+    cout << '\n';
+    printGames(record, 21);
+    return 0;
+}
+```
+
+设记录长度为 $n$，两次扫描总时间仍为 $O(n)$，额外空间为 $O(n)$。也可以边读边维护两套状态，把空间降到 $O(1)$，但先保存记录更便于复用逻辑并减少重复代码。
+
 ## 常见错误
 
 - 只看循环层数，不看循环变量总共移动多少次。

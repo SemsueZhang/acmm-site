@@ -4,6 +4,8 @@
 
 若 $b$ 为偶数，$a^b=(a^2)^{b/2}$；若为奇数，再额外乘一个 $a$。迭代时 `base` 表示当前二进制位对应的 $a^{2^k}$，`result` 累积指数位为 1 的部分。
 
+循环不变量是 `result * base^b` 与原始的 $a^b$ 同余：指数为奇数时先把一个 `base` 乘入 `result`，指数减去 1；随后把 `base` 平方并把指数除以 2，乘积代表的幂没有改变。当指数变为 0，`base^0=1`，所以 `result` 就是答案。这给出了算法的正确性证明。
+
 ```cpp
 long long modPow(long long a, long long b, long long mod) {
     a %= mod;
@@ -35,6 +37,36 @@ $$
 $$
 
 固定 $k\times k$ 矩阵一次乘法 $O(k^3)$，快速幂为 $O(k^3\log n)$。适合“状态维度很小、递推次数极大”的线性递推。
+
+## 真题：P1226 快速幂
+
+[洛谷 P1226【模板】快速幂](https://www.luogu.com.cn/problem/P1226) 要计算 $a^b\bmod p$。指数可能很大，但二进制位数只有 $O(\log b)$。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+long long modularPower(long long base, long long exponent, long long modulus) {
+    base %= modulus;
+    long long result = 1 % modulus;
+    while (exponent > 0) {
+        if (exponent & 1LL) result = result * base % modulus;
+        base = base * base % modulus;
+        exponent >>= 1;
+    }
+    return result;
+}
+
+int main() {
+    long long base, exponent, modulus;
+    cin >> base >> exponent >> modulus;
+    cout << base << '^' << exponent << " mod " << modulus << '='
+         << modularPower(base, exponent, modulus) << '\n';
+    return 0;
+}
+```
+
+本题数据范围内 `long long` 足以保存乘积；更大模数应使用 `__int128` 或安全乘法。时间 $O(\log b)$、空间 $O(1)$。
 
 ## 易错点
 

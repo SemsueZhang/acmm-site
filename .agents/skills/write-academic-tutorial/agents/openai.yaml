@@ -1,0 +1,4 @@
+interface:
+  display_name: "学术讲解博客写作"
+  short_description: "撰写结构严谨、推导清晰、例证充分的学术讲解类博客文章"
+  default_prompt: "Use $write-academic-tutorial to draft a rigorous and approachable academic tutorial blog post."

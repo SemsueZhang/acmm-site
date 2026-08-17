@@ -2,6 +2,8 @@
 
 当对象数 $n$ 很小（常见 $n\le20$）且只需记录“每个对象选或未选”，可用整数二进制位表示集合。第 $i$ 位为 1 表示对象 $i$ 已在集合中。
 
+本文默认对象编号为 $0\ldots n-1$，掩码 `mask` 的第 $i$ 位描述对象 $i$。状态压缩只减少“保存一个集合”的常数，并不会消除 $2^n$ 个集合；使用前必须计算状态数、每状态转移数和内存，而不能只看到 $n$ 较小就套用。
+
 ## 位操作
 
 ```cpp
@@ -39,7 +41,9 @@ for (int mask = 0; mask < total; ++mask) {
 }
 ```
 
-若需回到 0，答案为 `min(dp[all][u]+cost[u][0])`。状态数 $2^n n$，转移 $O(n)$，总时间 $O(2^n n^2)$，空间 $O(2^n n)$。
+状态为什么足够？已经访问各点的具体先后顺序会影响当前代价，但它对未来的作用已经压缩进最小值 `dp[mask][u]`；未来只需知道哪些点不可再访问以及当前所在点。任何访问序列都可以删掉最后一步得到一个前驱状态，因此转移不漏；从前驱接一条边到未访问点又一定产生合法序列，因此不产生非法路线。
+
+若需回到 0，答案为 `min(dp[all][u]+cost[u][0])`。状态数 $2^n n$，每状态转移 $O(n)$，总时间 $O(2^n n^2)$，空间 $O(2^n n)$。
 
 ## 枚举子集
 
@@ -56,6 +60,65 @@ for (int sub = mask; sub; sub = (sub - 1) & mask) {
 ## 合法状态预处理
 
 棋盘 DP 中可先枚举一行的所有掩码，筛掉相邻位同时为 1 的状态：`(mask & (mask<<1))==0`。再预处理任意两行是否冲突，避免 DP 内反复位运算。
+
+## 真题：P1896 互不侵犯
+
+[洛谷 P1896 互不侵犯](https://www.luogu.com.cn/problem/P1896) 要在 $n\times n$ 棋盘放置恰好 $k$ 个国王。用一个掩码表示一行：同一行不能相邻；相邻两行不能同列或斜向相邻。
+
+定义 `dp[row][used][state]` 为处理完前 `row` 行、共放 `used` 个国王、当前行状态为 `state` 的方案数。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n, target;
+    cin >> n >> target;
+
+    vector<int> states, countKings;
+    for (int mask = 0; mask < (1 << n); ++mask) {
+        if (mask & (mask << 1)) continue;
+        states.push_back(mask);
+        countKings.push_back(__builtin_popcount((unsigned)mask));
+    }
+
+    int stateCount = states.size();
+    vector<vector<int>> compatible(stateCount);
+    for (int current = 0; current < stateCount; ++current) {
+        for (int previous = 0; previous < stateCount; ++previous) {
+            int a = states[current], b = states[previous];
+            if ((a & b) || ((a << 1) & b) || ((a >> 1) & b)) continue;
+            compatible[current].push_back(previous);
+        }
+    }
+
+    vector<vector<long long>> previous(target + 1,
+        vector<long long>(stateCount));
+    previous[0][0] = 1; // states[0] 必为 0
+
+    for (int row = 1; row <= n; ++row) {
+        vector<vector<long long>> current(target + 1,
+            vector<long long>(stateCount));
+        for (int state = 0; state < stateCount; ++state) {
+            int added = countKings[state];
+            for (int used = added; used <= target; ++used)
+                for (int oldState : compatible[state])
+                    current[used][state] += previous[used - added][oldState];
+        }
+        previous.swap(current);
+    }
+
+    long long answer = 0;
+    for (int state = 0; state < stateCount; ++state)
+        answer += previous[target][state];
+    cout << answer << '\n';
+    return 0;
+}
+```
+
+设合法行状态数为 $S$，时间 $O(nkS^2)$、滚动后空间 $O(kS)$。预处理相容列表能避免在 DP 内反复检查全部位关系。
+
+题目对象与状态的对应是：一行的放置方案对应一个掩码，相邻行不能互相攻击对应两个掩码的相容关系，已经放置的国王数量必须单独成维。可迁移信号是“宽度很小、逐行推进、相邻若干行之间只有局部约束”。
 
 ## 易错点
 
